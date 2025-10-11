@@ -10,4 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hi => 'Hi';
+
+  @override
+  String get welcome => 'خوش آمدید';
 }

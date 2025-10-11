@@ -103,6 +103,12 @@ abstract class AppLocalizations {
   /// In fa, this message translates to:
   /// **'سلام'**
   String get hi;
+
+  /// No description provided for @welcome.
+  ///
+  /// In fa, this message translates to:
+  /// **'خوش آمدید'**
+  String get welcome;
 }
 
 class _AppLocalizationsDelegate

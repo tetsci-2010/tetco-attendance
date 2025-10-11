@@ -10,4 +10,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get hi => 'سلام';
+
+  @override
+  String get welcome => 'خوش آمدید';
 }

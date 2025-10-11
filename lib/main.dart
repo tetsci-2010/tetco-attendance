@@ -1,14 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tetco_attendance/constants/images_paths.dart';
-import 'package:tetco_attendance/utils/go_router.dart';
-import 'package:tetco_attendance/utils/my_media_query.dart';
+import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
+import 'package:tetco_attendance/features/data/blocs/localization_bloc/bloc/localization_bloc.dart';
+import 'package:tetco_attendance/utils/app_theme.dart';
+import 'package:tetco_attendance/utils/app_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => LocalizationBloc()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,60 +27,23 @@ class MyApp extends StatelessWidget {
       designSize: Size(392.72727272727275, 856.7272727272727),
       minTextAdapt: true,
       splitScreenMode: true,
-
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        debugShowCheckedModeBanner: false,
-        routerDelegate: appRouter.routerDelegate,
-        routeInformationParser: appRouter.routeInformationParser,
-        routeInformationProvider: appRouter.routeInformationProvider,
-      ),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  static const String id = '/splash_screen';
-  static const String name = 'splash_screen';
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(
-      const Duration(seconds: 3),
-      (timer) {},
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-      ),
-    );
-    return Scaffold(
-      body: Container(
-        height: getMediaQueryHeight(context),
-        width: getMediaQueryWidth(context),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImagesPaths.splashBackgroundPng),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Text('data'),
+      child: BlocBuilder<LocalizationBloc, LocalizationState>(
+        buildWhen: (previous, current) => previous.selectedLanguage != current.selectedLanguage,
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: 'TETCO Attendance',
+            themeMode: ThemeMode.system,
+            darkTheme: AppTheme.darkTheme(context),
+            theme: AppTheme.lightTheme(context),
+            debugShowCheckedModeBanner: false,
+            routerDelegate: appRouter.routerDelegate,
+            routeInformationParser: appRouter.routeInformationParser,
+            routeInformationProvider: appRouter.routeInformationProvider,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: state.selectedLanguage.value,
+          );
+        },
       ),
     );
   }

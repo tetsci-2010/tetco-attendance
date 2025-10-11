@@ -47,6 +47,18 @@ class SizeConstants {
   // Screen-aware helpers
   double get screenWidth => 1.sw;
   double get screenHeight => 1.sh;
+
+  // font sizes
+  double get fontDisplayLarge => 34.sp; // app name / splash
+  double get fontDisplayMedium => 30.sp; // big hero text
+  double get fontHeadlineLarge => 26.sp; // page title
+  double get fontHeadlineMedium => 22.sp; // section title
+  double get fontTitleLarge => 20.sp; // card / dialog title
+  double get fontTitleMedium => 18.sp; // medium heading
+  double get fontBodyLarge => 16.sp; // regular readable body
+  double get fontBodyMedium => 14.sp; // secondary text
+  double get fontLabelLarge => 13.sp; // button text
+  double get fontLabelSmall => 11.sp; // caption / helper text
 }
 
 SizeConstants sizeConstants = SizeConstants();
