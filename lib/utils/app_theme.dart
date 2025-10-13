@@ -5,12 +5,24 @@ import 'package:tetco_attendance/utils/size_constant.dart';
 class AppTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       textTheme: getLightTextTheme(),
     );
   }
 
   static ThemeData darkTheme(BuildContext context) {
     return ThemeData(
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       textTheme: getDarkTextTheme(),
     );
   }

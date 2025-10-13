@@ -19,15 +19,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
-    Timer.periodic(
-      const Duration(seconds: 3),
-      (timer) {
-        context.go(LoginScreen.id);
-      },
-    );
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+      context.go(LoginScreen.id);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override

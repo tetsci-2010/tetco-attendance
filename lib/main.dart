@@ -5,13 +5,15 @@ import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/blocs/localization_bloc/bloc/localization_bloc.dart';
 import 'package:tetco_attendance/utils/app_theme.dart';
 import 'package:tetco_attendance/utils/app_router.dart';
+import 'package:tetco_attendance/utils/dependency_injection.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await setupDI();
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => LocalizationBloc()),
+        BlocProvider(create: (_) => di<LocalizationBloc>()),
       ],
       child: const MyApp(),
     ),

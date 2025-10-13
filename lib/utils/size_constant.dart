@@ -48,17 +48,27 @@ class SizeConstants {
   double get screenWidth => 1.sw;
   double get screenHeight => 1.sh;
 
+  // Lottie animation
+  double get imageLarge => 250.w;
+  double get imageMedium => 180.w;
+  double get imageSmall => 100.w;
+
+  // Buttons & icons
+  double get iconLarge => 48.w;
+  double get iconMedium => 36.w;
+  double get iconSmall => 24.w;
+
   // font sizes
-  double get fontDisplayLarge => 34.sp; // app name / splash
-  double get fontDisplayMedium => 30.sp; // big hero text
-  double get fontHeadlineLarge => 26.sp; // page title
-  double get fontHeadlineMedium => 22.sp; // section title
-  double get fontTitleLarge => 20.sp; // card / dialog title
-  double get fontTitleMedium => 18.sp; // medium heading
-  double get fontBodyLarge => 16.sp; // regular readable body
-  double get fontBodyMedium => 14.sp; // secondary text
-  double get fontLabelLarge => 13.sp; // button text
-  double get fontLabelSmall => 11.sp; // caption / helper text
+  double get fontDisplayLarge => 40.sp; // app name / splash
+  double get fontDisplayMedium => 36.sp; // big hero text
+  double get fontHeadlineLarge => 32.sp; // page title
+  double get fontHeadlineMedium => 28.sp; // section title
+  double get fontTitleLarge => 24.sp; // card / dialog title
+  double get fontTitleMedium => 22.sp; // medium heading
+  double get fontBodyLarge => 18.sp; // regular readable body
+  double get fontBodyMedium => 16.sp; // secondary text
+  double get fontLabelLarge => 12.sp; // button text
+  double get fontLabelSmall => 8.sp; // caption / helper text
 }
 
 SizeConstants sizeConstants = SizeConstants();
