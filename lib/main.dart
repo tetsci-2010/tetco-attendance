@@ -6,6 +6,7 @@ import 'package:tetco_attendance/features/data/blocs/localization_bloc/bloc/loca
 import 'package:tetco_attendance/utils/app_theme.dart';
 import 'package:tetco_attendance/utils/app_router.dart';
 import 'package:tetco_attendance/utils/dependency_injection.dart';
+import 'package:toastification/toastification.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,31 +20,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => di<LocalizationBloc>()),
-      ],
-      child: ScreenUtilInit(
-        designSize: Size(392.72727272727275, 856.7272727272727),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        child: BlocBuilder<LocalizationBloc, LocalizationState>(
-          buildWhen: (previous, current) => previous.selectedLanguage != current.selectedLanguage,
-          builder: (context, localizationState) {
-            return MaterialApp.router(
-              title: 'TETCO Attendance',
-              themeMode: ThemeMode.system,
-              darkTheme: AppTheme.darkTheme(context, localizationState),
-              theme: AppTheme.lightTheme(context, localizationState),
-              debugShowCheckedModeBanner: false,
-              routerDelegate: appRouter.routerDelegate,
-              routeInformationParser: appRouter.routeInformationParser,
-              routeInformationProvider: appRouter.routeInformationProvider,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: localizationState.selectedLanguage.value,
-            );
-          },
+    return ToastificationWrapper(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => di<LocalizationBloc>()),
+        ],
+        child: ScreenUtilInit(
+          designSize: Size(392.72727272727275, 856.7272727272727),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: BlocBuilder<LocalizationBloc, LocalizationState>(
+            buildWhen: (previous, current) => previous.selectedLanguage != current.selectedLanguage,
+            builder: (context, localizationState) {
+              return MaterialApp.router(
+                title: 'TETCO Attendance',
+                themeMode: ThemeMode.system,
+                darkTheme: AppTheme.darkTheme(context, localizationState),
+                theme: AppTheme.lightTheme(context, localizationState),
+                debugShowCheckedModeBanner: false,
+                routerDelegate: appRouter.routerDelegate,
+                routeInformationParser: appRouter.routeInformationParser,
+                routeInformationProvider: appRouter.routeInformationProvider,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: localizationState.selectedLanguage.value,
+              );
+            },
+          ),
         ),
       ),
     );

@@ -14,6 +14,12 @@ class AppTheme {
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: kWarningColor,
+        linearTrackColor: kWarningTrackColor,
+        refreshBackgroundColor: kWarningBgColor,
+      ),
+      cardColor: kGreyColor200,
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
         labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
@@ -55,6 +61,12 @@ class AppTheme {
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: kWarningColor,
+        linearTrackColor: kWarningTrackColor,
+        refreshBackgroundColor: kWarningBgColor,
+      ),
+      cardColor: kGreyColor800,
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
         labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),

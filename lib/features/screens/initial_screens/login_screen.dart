@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/images_paths.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/main_home_screen.dart';
 import 'package:tetco_attendance/helpers/direction_helper.dart';
+import 'package:tetco_attendance/helpers/helpers.dart';
 import 'package:tetco_attendance/helpers/orientation_helper.dart';
+import 'package:tetco_attendance/packages/toast_package/toast_package.dart';
 import 'package:tetco_attendance/utils/my_media_query.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 import 'package:tetco_attendance/widgets/lottie_widget.dart';
@@ -28,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     lockPortrait();
-    emailController = TextEditingController();
-    passController = TextEditingController();
+    emailController = TextEditingController(text: 'amir@gmail.com');
+    passController = TextEditingController(text: 'password');
     showPass = ValueNotifier<bool>(false);
     formKey = GlobalKey();
   }
@@ -195,7 +199,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   try {
                                     if (formKey.currentState!.validate()) {
-                                    } else {}
+                                      context.go(MainHomeScreen.id);
+                                    } else {
+                                      Helpers.hapticFeedback();
+                                      ToastPackage.showWarningToast(
+                                        message: AppLocalizations.of(context)!.pleaseFillAllRequiredFields,
+                                        dragToClose: true,
+                                        closeDuration: const Duration(seconds: 5),
+                                        toastAlignment: Alignment.bottomCenter,
+                                        showProgressBar: true,
+                                      );
+                                    }
                                   } catch (e) {}
                                 },
                                 child: Text(
@@ -252,7 +266,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.labelText,
     required this.onClearTap,
-    this.hideValue = false,
+    this.hideValue,
     this.showClearBtn = false,
     this.focusNode,
     this.textInputType,
@@ -266,7 +280,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String? value)? validator;
   final String? labelText;
   final VoidCallback onClearTap;
-  final bool hideValue;
+  final bool? hideValue;
   final bool showClearBtn;
   final FocusNode? focusNode;
   final TextInputType? textInputType;
@@ -277,10 +291,11 @@ class CustomTextFormField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16),
       child: TextFormField(
         focusNode: focusNode,
+        controller: controller,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
         validator: validator,
-        obscureText: hideValue,
+        obscureText: hideValue ?? false,
         keyboardType: textInputType,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kPrimaryColor),
         decoration: InputDecoration(
@@ -288,13 +303,15 @@ class CustomTextFormField extends StatelessWidget {
           labelText: labelText,
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
           suffixIcon: showClearBtn
-              ? GestureDetector(
-                  onTap: onClearTap,
-                  child: Icon(
-                    Icons.clear,
-                    color: kRedColor,
-                  ),
-                )
+              ? hideValue == null
+                    ? GestureDetector(
+                        onTap: onClearTap,
+                        child: Icon(
+                          Icons.clear,
+                          color: kRedColor,
+                        ),
+                      )
+                    : suffixIcon
               : suffixIcon,
         ),
       ),
