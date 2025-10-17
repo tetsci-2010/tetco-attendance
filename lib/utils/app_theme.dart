@@ -1,27 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:tetco_attendance/constants/colors.dart';
+import 'package:tetco_attendance/features/data/blocs/localization_bloc/bloc/localization_bloc.dart';
+import 'package:tetco_attendance/features/data/enums/language.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 
 class AppTheme {
-  static ThemeData lightTheme(BuildContext context) {
+  static ThemeData lightTheme(BuildContext context, LocalizationState localizationState) {
     return ThemeData(
+      fontFamily: localizationState.selectedLanguage == Language.persian ? 'BYekan' : 'Poppins',
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
+        labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kRedColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kSecondaryColor),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+      ),
       textTheme: getLightTextTheme(),
     );
   }
 
-  static ThemeData darkTheme(BuildContext context) {
+  static ThemeData darkTheme(BuildContext context, LocalizationState localizationState) {
     return ThemeData(
+      fontFamily: localizationState.selectedLanguage == Language.persian ? 'BYekan' : 'Poppins',
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
+        labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kRedColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kSecondaryColor),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
       ),
       textTheme: getDarkTextTheme(),
     );

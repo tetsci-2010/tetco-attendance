@@ -1,4 +1,12 @@
 {
     "hi": "سلام",
-    "welcome": "خوش آمدید"
+    "welcome": "خوش آمدید",
+    "emailAddress": "ایمیل آدرس",
+    "enterEmailAddress": "ایمیل آدرس را وارد کنید",
+    "password": "رمز عبور",
+    "enterPassword": "رمز عبور را وارد کنید",
+    "pleaseLoginBeforeContinue": "برای ادامه لطفا وارد حساب کاربری خود شوید",
+    "login": "ورود",
+    "thisFieldIsRequired": "این فیلد ضروری می‌باشد",
+    "pleaseFillAllRequiredFields": "لطفا تمامی فیلد های لازم را پر کنید"
 }

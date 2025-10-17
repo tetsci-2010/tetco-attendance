@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/images_paths.dart';
+import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/helpers/direction_helper.dart';
+import 'package:tetco_attendance/helpers/orientation_helper.dart';
 import 'package:tetco_attendance/utils/my_media_query.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 import 'package:tetco_attendance/widgets/lottie_widget.dart';
@@ -19,18 +21,26 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passController;
+  late ValueNotifier<bool> showPass;
+  late GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     super.initState();
+    lockPortrait();
     emailController = TextEditingController();
     passController = TextEditingController();
+    showPass = ValueNotifier<bool>(false);
+    formKey = GlobalKey();
   }
 
   @override
   void dispose() {
     emailController.dispose();
     passController.dispose();
+    showPass.dispose();
+    formKey.currentState?.dispose();
+    releaseOrientationLock();
     super.dispose();
   }
 
@@ -38,160 +48,194 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        physics: Constants.bouncingScrollPhysics,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: getMediaQueryWidth(context),
-              height: getMediaQueryHeight(context, 0.4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(sizeConstants.radiusXLarge),
-                  bottomRight: Radius.circular(sizeConstants.radiusXLarge),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF0D47A1), // Dark Blue
-                    Color(0xFF1565C0), // Medium Dark Blue
-                    Color(0xFF00838F), // Dark Teal
-                  ],
-                  stops: [0.0, 0.5, 1.0],
-                ),
-              ),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  physics: Constants.bouncingScrollPhysics,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      LottieWidget(
-                        lottieImage: ImagesPaths.loginJson,
-                        repeat: false,
-                        height: sizeConstants.imageLarge,
-                        boxFit: BoxFit.cover,
+      body: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: SingleChildScrollView(
+              physics: Constants.bouncingScrollPhysics,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: getMediaQueryWidth(context),
+                    height: getMediaQueryHeight(context, 0.5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(sizeConstants.radiusXLarge),
+                        bottomRight: Radius.circular(sizeConstants.radiusXLarge),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('سلام', style: Theme.of(context).textTheme.headlineLarge),
-                          SizedBox(width: 5),
-                          Icon(Icons.waving_hand_rounded, color: kOrangeAccentColor),
-                          SizedBox(width: 10),
-                          Text('خوش آمدید!', style: Theme.of(context).textTheme.headlineLarge),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF0D47A1), // Dark Blue
+                          Color(0xFF1565C0), // Medium Dark Blue
+                          Color(0xFF00838F), // Dark Teal
                         ],
+                        stops: [0.0, 0.5, 1.0],
                       ),
-                      SizedBox(height: sizeConstants.spacing12),
-                      Text(
-                        'لطفا برای ادامه وارد حساب خود شوید',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium!.copyWith(color: kWhiteColor, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: sizeConstants.spacing20),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Stack(
-              children: [
-                Form(
-                  child: Column(
-                    children: [
-                      SizedBox(height: getMediaQueryHeight(context, 0.1)),
-                      ValueListenableBuilder(
-                        valueListenable: emailController,
-                        builder: (context, email, child) {
-                          return CustomTextFormField(
-                            controller: emailController,
-                            labelText: 'ایمیل آدرس',
-                            suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
-                            onChanged: (value) {},
-                            hintText: 'ایمیل را وارد کنید *',
-                            showClearBtn: email.text.isNotEmpty,
-                            onClearTap: () {},
-                            validator: (value) {
-                              return null;
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: sizeConstants.spacing12),
-                      ValueListenableBuilder(
-                        valueListenable: passController,
-                        builder: (context, password, child) {
-                          return CustomTextFormField(
-                            controller: passController,
-                            labelText: 'رمز عبور',
-                            suffixIcon: Icon(Icons.lock_outline_rounded, color: kPrimaryColor),
-                            onChanged: (value) {},
-                            hintText: 'رمز عبور را وارد کنید *',
-                            showClearBtn: password.text.isNotEmpty,
-                            onClearTap: () {},
-
-                            validator: (value) {
-                              return null;
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: sizeConstants.spacing40),
-                      Stack(
-                        children: [
-                          SizedBox(
-                            width: getMediaQueryWidth(context, 0.9),
-                            height: sizeConstants.buttonHeight,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+                    ),
+                    child: SafeArea(
+                      child: SingleChildScrollView(
+                        physics: Constants.bouncingScrollPhysics,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            LottieWidget(
+                              lottieImage: ImagesPaths.loginJson,
+                              height: sizeConstants.imageLarge,
+                              boxFit: BoxFit.cover,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.hi,
+                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: kWhiteColor),
                                 ),
-                                overlayColor: kWhiteColor,
-                                backgroundColor: kPrimaryColor,
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                'ورود',
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kWhiteColor, fontWeight: FontWeight.bold),
-                              ),
+                                SizedBox(width: 5),
+                                Icon(Icons.waving_hand_rounded, color: kOrangeAccentColor),
+                                SizedBox(width: 10),
+                                Text(
+                                  AppLocalizations.of(context)!.welcome,
+                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: kWhiteColor),
+                                ),
+                              ],
                             ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            top: 0,
-                            right: isRTLDirection(context) ? sizeConstants.spacing16 : null,
-                            left: isRTLDirection(context) ? null : sizeConstants.spacing16,
-                            child: Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              size: sizeConstants.iconS,
-                              color: kWhiteColor,
+                            SizedBox(height: sizeConstants.spacing12),
+                            Text(
+                              AppLocalizations.of(context)!.pleaseLoginBeforeContinue,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium!.copyWith(color: kWhiteColor, fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
+                            SizedBox(height: sizeConstants.spacing20),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Positioned(
-                  bottom: 3,
-                  left: 0,
-                  right: 0,
-                  child: Text(
-                    '© 2025 TETCO Labs. All rights reserved.',
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: kPrimaryColor),
-                    textDirection: TextDirection.ltr,
-                    textAlign: TextAlign.center,
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        SizedBox(height: getMediaQueryHeight(context, 0.1)),
+                        ValueListenableBuilder(
+                          valueListenable: emailController,
+                          builder: (context, email, child) {
+                            return CustomTextFormField(
+                              textInputType: TextInputType.emailAddress,
+                              controller: emailController,
+                              labelText: AppLocalizations.of(context)!.emailAddress,
+                              suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
+                              onChanged: (value) {},
+                              hintText: AppLocalizations.of(context)!.enterEmailAddress,
+                              showClearBtn: emailController.text.isNotEmpty,
+                              onClearTap: () {},
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return AppLocalizations.of(context)!.thisFieldIsRequired;
+                                }
+                                return null;
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(height: sizeConstants.spacing12),
+                        ValueListenableBuilder(
+                          valueListenable: showPass,
+                          builder: (context, showPasss, child) {
+                            return ValueListenableBuilder(
+                              valueListenable: passController,
+                              builder: (context, password, child) {
+                                return CustomTextFormField(
+                                  controller: passController,
+                                  labelText: AppLocalizations.of(context)!.password,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      try {
+                                        showPass.value = !showPass.value;
+                                      } catch (_) {}
+                                    },
+                                    child: Icon(showPasss ? Icons.lock_open_rounded : Icons.lock_outline_rounded, color: kPrimaryColor),
+                                  ),
+                                  onChanged: (value) {},
+                                  hintText: AppLocalizations.of(context)!.enterPassword,
+                                  showClearBtn: password.text.isNotEmpty,
+                                  hideValue: !showPasss,
+                                  onClearTap: () {},
+
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return AppLocalizations.of(context)!.thisFieldIsRequired;
+                                    }
+                                    return null;
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(height: sizeConstants.spacing40),
+                        Stack(
+                          children: [
+                            SizedBox(
+                              width: getMediaQueryWidth(context, 0.9),
+                              height: sizeConstants.buttonHeight,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+                                  ),
+                                  overlayColor: kWhiteColor,
+                                  backgroundColor: kPrimaryColor,
+                                ),
+                                onPressed: () {
+                                  try {
+                                    if (formKey.currentState!.validate()) {
+                                    } else {}
+                                  } catch (e) {}
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.login,
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kWhiteColor, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              top: 0,
+                              right: isRTLDirection(context) ? sizeConstants.spacing16 : null,
+                              left: isRTLDirection(context) ? null : sizeConstants.spacing16,
+                              child: Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                size: sizeConstants.iconS,
+                                color: kWhiteColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 8,
+            left: 0,
+            right: 0,
+            child: Text(
+              '© 2025 TETCO Labs. All rights reserved.',
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(color: kBlackColor, fontFamily: 'Poppins'),
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -211,6 +255,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hideValue = false,
     this.showClearBtn = false,
     this.focusNode,
+    this.textInputType,
   });
 
   final String? hintText;
@@ -224,6 +269,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool hideValue;
   final bool showClearBtn;
   final FocusNode? focusNode;
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {
@@ -235,12 +281,12 @@ class CustomTextFormField extends StatelessWidget {
         onFieldSubmitted: onFieldSubmitted,
         validator: validator,
         obscureText: hideValue,
+        keyboardType: textInputType,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kPrimaryColor),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
           labelText: labelText,
-          labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
+          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
           suffixIcon: showClearBtn
               ? GestureDetector(
                   onTap: onClearTap,
@@ -250,30 +296,6 @@ class CustomTextFormField extends StatelessWidget {
                   ),
                 )
               : suffixIcon,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kSecondaryColor),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
         ),
       ),
     );

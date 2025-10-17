@@ -12,5 +12,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hi => 'Hi';
 
   @override
-  String get welcome => 'خوش آمدید';
+  String get welcome => 'Welcome';
+
+  @override
+  String get emailAddress => 'Email address';
+
+  @override
+  String get enterEmailAddress => 'Enter email address';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get enterPassword => 'Enter password';
+
+  @override
+  String get pleaseLoginBeforeContinue =>
+      'Please login before proceeding further';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get thisFieldIsRequired => 'This field is requried';
+
+  @override
+  String get pleaseFillAllRequiredFields => 'Please fill all requried fields';
 }

@@ -1,4 +1,12 @@
 {
-    "hi": "Hi",
-    "welcome": "خوش آمدید"
+  "hi": "Hi",
+  "welcome": "Welcome",
+  "emailAddress": "Email address",
+  "enterEmailAddress": "Enter email address",
+  "password": "Password",
+  "enterPassword": "Enter password",
+  "pleaseLoginBeforeContinue": "Please login before proceeding further",
+  "login": "Login",
+  "thisFieldIsRequired": "This field is requried",
+  "pleaseFillAllRequiredFields": "Please fill all requried fields"
 }

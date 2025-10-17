@@ -109,6 +109,54 @@ abstract class AppLocalizations {
   /// In fa, this message translates to:
   /// **'خوش آمدید'**
   String get welcome;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In fa, this message translates to:
+  /// **'ایمیل آدرس'**
+  String get emailAddress;
+
+  /// No description provided for @enterEmailAddress.
+  ///
+  /// In fa, this message translates to:
+  /// **'ایمیل آدرس را وارد کنید'**
+  String get enterEmailAddress;
+
+  /// No description provided for @password.
+  ///
+  /// In fa, this message translates to:
+  /// **'رمز عبور'**
+  String get password;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In fa, this message translates to:
+  /// **'رمز عبور را وارد کنید'**
+  String get enterPassword;
+
+  /// No description provided for @pleaseLoginBeforeContinue.
+  ///
+  /// In fa, this message translates to:
+  /// **'برای ادامه لطفا وارد حساب کاربری خود شوید'**
+  String get pleaseLoginBeforeContinue;
+
+  /// No description provided for @login.
+  ///
+  /// In fa, this message translates to:
+  /// **'ورود'**
+  String get login;
+
+  /// No description provided for @thisFieldIsRequired.
+  ///
+  /// In fa, this message translates to:
+  /// **'این فیلد ضروری می‌باشد'**
+  String get thisFieldIsRequired;
+
+  /// No description provided for @pleaseFillAllRequiredFields.
+  ///
+  /// In fa, this message translates to:
+  /// **'لطفا تمامی فیلد های لازم را پر کنید'**
+  String get pleaseFillAllRequiredFields;
 }
 
 class _AppLocalizationsDelegate

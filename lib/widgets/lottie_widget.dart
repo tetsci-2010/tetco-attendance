@@ -21,6 +21,7 @@ class LottieWidget extends StatelessWidget {
     return Lottie.asset(
       lottieImage,
       errorBuilder: (context, error, stackTrace) {
+        debugPrint('${error.toString()} - ${stackTrace}');
         return Icon(Icons.broken_image);
       },
       height: height,
