@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tetco_attendance/utils/my_media_query.dart';
 
 /// Standard responsive size constants based on Material Design 3 spacing
 /// and Flutter community conventions.
@@ -57,6 +59,28 @@ class SizeConstants {
   double get iconLarge => 48.w;
   double get iconMedium => 36.w;
   double get iconSmall => 24.w;
+
+  // ✅ Compact card — for small tiles (e.g., notification or tag cards)
+  double cardCompactWidth = 120.0;
+  double cardCompactHeight = 100.0;
+
+  // ✅ Standard card — for most use cases (e.g., info or content cards)
+  double cardStandardWidth = 160.0;
+  double cardStandardHeight = 140.0;
+
+  // ✅ Large card — for highlighted content or banners
+  double cardLargeWidth = 200.0;
+  double cardLargeHeight = 180.0;
+
+  // Used for profile pictures, initials, or icons.
+  double avatarXS = 20.0; // Very small, e.g., chat bubbles
+  double avatarSmall = 32.0; // Small lists or icons
+  double avatarMedium = 48.0; // Default user avatar
+  double avatarLarge = 64.0; // Profile pages or tiles
+  double avatarXLarge = 80.0; // Highlighted or hero avatars
+
+  // Responsive option for dynamic avatar sizing
+  double avatarResponsive(BuildContext context, double scale) => getMediaQueryWidth(context, scale) * 0.25;
 
   // font sizes
   double get fontDisplayLarge => 40.sp; // app name / splash

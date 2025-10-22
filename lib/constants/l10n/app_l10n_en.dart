@@ -38,4 +38,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseFillAllRequiredFields => 'Please fill all requried fields';
+
+  @override
+  String get h => 'P';
+
+  @override
+  String get gh => 'A';
+
+  @override
+  String get t => 'L';
 }

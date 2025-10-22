@@ -1,9 +1,11 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/images_paths.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
+import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/utils/my_media_query.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
@@ -18,59 +20,221 @@ class MainHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80.h,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
+      body: SafeArea(
+        child: Column(
           children: [
-            Flexible(
-              child: CircleAvatar(
-                backgroundImage: AssetImage(ImagesPaths.demoProfileJpg),
-                radius: sizeConstants.iconMedium,
+            //* Appbar
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing8, vertical: sizeConstants.spacing4),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Theme.of(context).primaryColor)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.menu,
+                      size: sizeConstants.iconL,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.notifications_active_rounded,
+                      color: kOrangeColor,
+                      size: sizeConstants.iconL,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(width: sizeConstants.spacing8),
-            Text('${AppLocalizations.of(context)!.hi} 👋\n${AppLocalizations.of(context)!.welcome}'),
+            //* Date
+            Container(
+              width: getMediaQueryWidth(context),
+              padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing8, vertical: sizeConstants.spacing4),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.filter_alt_rounded)),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.arrow_back_ios_new_rounded, size: sizeConstants.iconS),
+                      ),
+                      SizedBox(width: sizeConstants.spacing4),
+                      Text('چهار شنبه، ۳۰ میزان ۱۴۰۴'),
+                      SizedBox(width: sizeConstants.spacing4),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.arrow_forward_ios_rounded, size: sizeConstants.iconS),
+                      ),
+                    ],
+                  ),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search_rounded)),
+                ],
+              ),
+            ),
+            //* Body
+            Expanded(
+              child: MasonryGridView.builder(
+                gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                padding: EdgeInsets.all(sizeConstants.spacing16),
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                itemCount: 40,
+                itemBuilder: (context, index) {
+                  return EmployeeAttendanceCheckCard(
+                    name: 'بهرام',
+                    lName: 'افشار',
+                    avatarColor: kRedColor.withAlpha(35),
+                    onTap: () {},
+                    status: AttStatusEnums.absent,
+                  );
+                },
+              ),
+            ),
           ],
         ),
-        titleTextStyle: Theme.of(context).textTheme.titleMedium,
-        actions: [
-          IconButton(
-            onPressed: () {
-              employees.clear();
-              for (var i = 0; i < 20; i++) {
-                employees.add(
-                  EmployeeModel(
-                    id: i + 1,
-                    name: 'کارمند امتحانی ${i + 1}',
-                    fName: 'پدر کارمند امتحانی ${i + 1}',
-                    phone: (i + 1) % 2 == 0 ? '07978723717' : null,
-                  ),
-                );
-              }
-            },
-            icon: Icon(Icons.notifications, color: kOrangeColor),
-          ),
-          SizedBox(width: sizeConstants.spacing8),
-        ],
       ),
-      body: ListView.separated(
-        physics: Constants.bouncingScrollPhysics,
-        itemBuilder: (context, index) {
-          return EmployeeAttendCard(
-            index: index,
-            name: employees[index].name,
-            fName: employees[index].fName,
-            phone: employees[index].phone,
-            image: employees[index].image,
-          );
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(height: sizeConstants.spacing12);
-        },
-        itemCount: employees.length,
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(1000)),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: kWhiteColor,
+        onPressed: () {},
+        child: Icon(Icons.person_add_alt_rounded),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        icons: [Icons.calendar_today, Icons.money],
+        activeColor: Theme.of(context).primaryColor,
+        borderColor: Theme.of(context).primaryColor,
+        inactiveColor: kGreyColor,
+        gapLocation: GapLocation.center,
+        activeIndex: 0,
+        onTap: (index) {},
       ),
     );
+  }
+}
+
+class EmployeeAttendanceCheckCard extends StatelessWidget {
+  const EmployeeAttendanceCheckCard({
+    super.key,
+    required this.name,
+    required this.lName,
+    required this.status,
+    required this.onTap,
+    required this.avatarColor,
+  });
+  final String name;
+  final String lName;
+  final AttStatusEnums status;
+  final VoidCallback onTap;
+  final Color avatarColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: sizeConstants.cardStandardWidth,
+      height: sizeConstants.cardStandardHeight,
+      constraints: BoxConstraints(
+        maxWidth: sizeConstants.cardStandardWidth,
+        maxHeight: sizeConstants.cardStandardWidth,
+      ),
+      padding: EdgeInsets.all(sizeConstants.spacing12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor,
+            offset: Offset(0, 3),
+            blurRadius: 7,
+            spreadRadius: .8,
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: sizeConstants.avatarResponsive(context, 0.7),
+                  height: sizeConstants.avatarResponsive(context, 0.7),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kRedColor.withAlpha(40),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${name[0]}.${lName[0]}',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+                Positioned(
+                  bottom: -7,
+                  right: 5,
+                  child: Container(
+                    width: sizeConstants.iconM,
+                    height: sizeConstants.iconM,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 2, color: Theme.of(context).scaffoldBackgroundColor),
+                      color: getStatusColor(status),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      getStatus(context, status),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kWhiteColor),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: sizeConstants.spacing16),
+            Flexible(child: Text('بهرام افشار', style: Theme.of(context).textTheme.bodyLarge)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Color getStatusColor(AttStatusEnums status) {
+  switch (status) {
+    case AttStatusEnums.present:
+      return kGreenColor;
+    case AttStatusEnums.absent:
+      return kRedColor;
+    case AttStatusEnums.latee:
+      return kOrangeAccentColor;
+  }
+}
+
+String getStatus(BuildContext context, AttStatusEnums status) {
+  switch (status) {
+    case AttStatusEnums.present:
+      return AppLocalizations.of(context)!.h;
+    case AttStatusEnums.absent:
+      return AppLocalizations.of(context)!.gh;
+    case AttStatusEnums.latee:
+      return AppLocalizations.of(context)!.t;
   }
 }
 

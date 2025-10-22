@@ -39,4 +39,13 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get pleaseFillAllRequiredFields =>
       'لطفا تمامی فیلد های لازم را پر کنید';
+
+  @override
+  String get h => 'ح';
+
+  @override
+  String get gh => 'غ';
+
+  @override
+  String get t => 'ت';
 }

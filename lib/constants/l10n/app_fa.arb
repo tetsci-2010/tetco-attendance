@@ -8,5 +8,8 @@
     "pleaseLoginBeforeContinue": "برای ادامه لطفا وارد حساب کاربری خود شوید",
     "login": "ورود",
     "thisFieldIsRequired": "این فیلد ضروری می‌باشد",
-    "pleaseFillAllRequiredFields": "لطفا تمامی فیلد های لازم را پر کنید"
+    "pleaseFillAllRequiredFields": "لطفا تمامی فیلد های لازم را پر کنید",
+    "h": "ح",
+    "gh": "غ",
+    "t": "ت"
 }

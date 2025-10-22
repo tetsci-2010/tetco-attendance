@@ -157,6 +157,24 @@ abstract class AppLocalizations {
   /// In fa, this message translates to:
   /// **'لطفا تمامی فیلد های لازم را پر کنید'**
   String get pleaseFillAllRequiredFields;
+
+  /// No description provided for @h.
+  ///
+  /// In fa, this message translates to:
+  /// **'ح'**
+  String get h;
+
+  /// No description provided for @gh.
+  ///
+  /// In fa, this message translates to:
+  /// **'غ'**
+  String get gh;
+
+  /// No description provided for @t.
+  ///
+  /// In fa, this message translates to:
+  /// **'ت'**
+  String get t;
 }
 
 class _AppLocalizationsDelegate

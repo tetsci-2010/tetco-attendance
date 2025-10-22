@@ -8,5 +8,8 @@
   "pleaseLoginBeforeContinue": "Please login before proceeding further",
   "login": "Login",
   "thisFieldIsRequired": "This field is requried",
-  "pleaseFillAllRequiredFields": "Please fill all requried fields"
+  "pleaseFillAllRequiredFields": "Please fill all requried fields",
+    "h": "P",
+    "gh": "A",
+    "t": "L"
 }

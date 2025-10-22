@@ -29,3 +29,8 @@ const kWarningTrackColor = Color(0xFFFFE082);
 const kWarningBgColor = Color(0xFFFFF3E0);
 
 const Color kRedColor = Colors.red;
+
+const kYellowColor = Colors.yellow;
+
+const Color darkBoxShadowColor = Colors.black12;
+const Color lightBoxShadowColor = Colors.black26;

@@ -19,7 +19,10 @@ class AppTheme {
         linearTrackColor: kWarningTrackColor,
         refreshBackgroundColor: kWarningBgColor,
       ),
+      brightness: Brightness.light,
+      primaryColor: kPrimaryColor,
       cardColor: kGreyColor200,
+      shadowColor: darkBoxShadowColor,
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
         labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor, fontWeight: FontWeight.bold),
@@ -55,12 +58,15 @@ class AppTheme {
   static ThemeData darkTheme(BuildContext context, LocalizationState localizationState) {
     return ThemeData(
       fontFamily: localizationState.selectedLanguage == Language.persian ? 'BYekan' : 'Poppins',
+      brightness: Brightness.dark,
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      primaryColor: kPrimaryColor,
+      shadowColor: lightBoxShadowColor,
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: kWarningColor,
         linearTrackColor: kWarningTrackColor,
