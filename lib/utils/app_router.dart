@@ -3,6 +3,7 @@ import 'package:tetco_attendance/features/screens/initial_screens/login_screen.d
 import 'package:tetco_attendance/features/screens/initial_screens/splash_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/home_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/main_home_screen.dart';
+import 'package:tetco_attendance/features/screens/main_screens/payroll_screen/payroll_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   debugLogDiagnostics: true,
@@ -34,6 +35,13 @@ final GoRouter appRouter = GoRouter(
       name: HomeScreen.name,
       builder: (context, state) {
         return HomeScreen();
+      },
+    ),
+    GoRoute(
+      path: PayrollScreen.id,
+      name: PayrollScreen.name,
+      builder: (context, state) {
+        return PayrollScreen();
       },
     ),
   ],

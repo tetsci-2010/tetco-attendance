@@ -11,5 +11,11 @@
     "pleaseFillAllRequiredFields": "لطفا تمامی فیلد های لازم را پر کنید",
     "h": "ح",
     "gh": "غ",
-    "t": "ت"
+    "t": "ت",
+    "comingSoon": "به زودی...",
+    "present": "حاضر",
+    "absent": "غیر حاضر",
+    "late": "تاخیر",
+    "details": "جزئیات",
+    "search": "جستجو"
 }

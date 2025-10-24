@@ -47,4 +47,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get t => 'L';
+
+  @override
+  String get comingSoon => 'Coming soon...';
+
+  @override
+  String get present => 'Present';
+
+  @override
+  String get absent => 'Absent';
+
+  @override
+  String get late => 'Late';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get search => 'جستجو';
 }

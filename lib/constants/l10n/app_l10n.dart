@@ -175,6 +175,42 @@ abstract class AppLocalizations {
   /// In fa, this message translates to:
   /// **'ت'**
   String get t;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In fa, this message translates to:
+  /// **'به زودی...'**
+  String get comingSoon;
+
+  /// No description provided for @present.
+  ///
+  /// In fa, this message translates to:
+  /// **'حاضر'**
+  String get present;
+
+  /// No description provided for @absent.
+  ///
+  /// In fa, this message translates to:
+  /// **'غیر حاضر'**
+  String get absent;
+
+  /// No description provided for @late.
+  ///
+  /// In fa, this message translates to:
+  /// **'تاخیر'**
+  String get late;
+
+  /// No description provided for @details.
+  ///
+  /// In fa, this message translates to:
+  /// **'جزئیات'**
+  String get details;
+
+  /// No description provided for @search.
+  ///
+  /// In fa, this message translates to:
+  /// **'جستجو'**
+  String get search;
 }
 
 class _AppLocalizationsDelegate

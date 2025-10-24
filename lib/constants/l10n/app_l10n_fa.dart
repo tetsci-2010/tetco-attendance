@@ -48,4 +48,22 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get t => 'ت';
+
+  @override
+  String get comingSoon => 'به زودی...';
+
+  @override
+  String get present => 'حاضر';
+
+  @override
+  String get absent => 'غیر حاضر';
+
+  @override
+  String get late => 'تاخیر';
+
+  @override
+  String get details => 'جزئیات';
+
+  @override
+  String get search => 'جستجو';
 }

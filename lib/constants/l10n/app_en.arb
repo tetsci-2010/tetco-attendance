@@ -9,7 +9,13 @@
   "login": "Login",
   "thisFieldIsRequired": "This field is requried",
   "pleaseFillAllRequiredFields": "Please fill all requried fields",
-    "h": "P",
-    "gh": "A",
-    "t": "L"
+  "h": "P",
+  "gh": "A",
+  "t": "L",
+  "comingSoon": "Coming soon...",
+  "present": "Present",
+  "absent": "Absent",
+  "late": "Late",
+  "details": "Details",
+  "search": "جستجو"
 }
