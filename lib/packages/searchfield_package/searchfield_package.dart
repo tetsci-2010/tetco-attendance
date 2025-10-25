@@ -10,7 +10,15 @@ class SearchfieldPackage<T> extends StatelessWidget {
   final String? hint;
   final VoidCallback onCloseTap;
   final FutureOr<List<SearchFieldListItem<T>>>? Function(String value)? onSearchTextChanged;
-  const SearchfieldPackage({super.key, required this.suggestions, this.hint, required this.onCloseTap, this.onSearchTextChanged});
+  final TextEditingController controller;
+  const SearchfieldPackage({
+    super.key,
+    required this.suggestions,
+    this.hint,
+    required this.onCloseTap,
+    this.onSearchTextChanged,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +29,7 @@ class SearchfieldPackage<T> extends StatelessWidget {
         children: [
           Flexible(
             child: SearchField(
+              controller: controller,
               suggestions: suggestions,
               searchInputDecoration: SearchInputDecoration(
                 hint: hint != null ? Text(hint!) : null,

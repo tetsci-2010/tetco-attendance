@@ -7,7 +7,7 @@ PopupMenuItem<String> popupMenuOpt<T>({
   required String title,
   required VoidCallback onTap,
   required String value,
-  required T emp,
+  bool isSelected = false,
   Color? color,
 }) {
   return PopupMenuItem(
@@ -16,9 +16,9 @@ PopupMenuItem<String> popupMenuOpt<T>({
     onTap: onTap,
     child: Row(
       children: [
-        Icon(icon, color: color, size: sizeConstants.iconS),
+        Icon(isSelected ? Icons.check_box : icon, color: isSelected ? Theme.of(context).primaryColor : color, size: sizeConstants.iconS),
         SizedBox(width: 5),
-        Text(title, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: color)),
+        Text(title, style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: isSelected ? Theme.of(context).primaryColor : color)),
       ],
     ),
   );

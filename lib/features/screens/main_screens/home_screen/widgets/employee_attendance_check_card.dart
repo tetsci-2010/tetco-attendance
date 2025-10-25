@@ -47,7 +47,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
           items: [
             popupMenuOpt<EmployeeModel>(
               context: context,
-              emp: employee,
+
               icon: Icons.done_all_rounded,
               onTap: () {
                 onPresent(employee);
@@ -58,7 +58,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
             ),
             popupMenuOpt<EmployeeModel>(
               context: context,
-              emp: employee,
+
               icon: Icons.close,
               onTap: () {
                 onAbsent(employee);
@@ -69,7 +69,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
             ),
             popupMenuOpt<EmployeeModel>(
               context: context,
-              emp: employee,
+
               icon: Icons.hourglass_bottom,
               onTap: () {
                 onLate(employee);
@@ -80,7 +80,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
             ),
             popupMenuOpt<EmployeeModel>(
               context: context,
-              emp: employee,
+
               icon: Icons.info_outline,
               onTap: () {
                 onDetails(employee);

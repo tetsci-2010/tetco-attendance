@@ -57,8 +57,23 @@ class AppProvider extends ChangeNotifier {
   }
 
   bool isSearchingEmp = false;
-  void toggleIsSearchingEmp() {
-    isSearchingEmp = !isSearchingEmp;
+  void toggleIsSearchingEmp([bool? isSearching]) {
+    if (isSearching == null) {
+      isSearchingEmp = !isSearchingEmp;
+    } else {
+      isSearchingEmp = isSearching;
+    }
+    notifyListeners();
+  }
+
+  AttStatusEnums? sStatusFilter;
+  void updateSelectedStatus(AttStatusEnums status) {
+    sStatusFilter = status;
+    notifyListeners();
+  }
+
+  void resetFilter() {
+    sStatusFilter = null;
     notifyListeners();
   }
 }
