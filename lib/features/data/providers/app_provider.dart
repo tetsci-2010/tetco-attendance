@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
+import 'package:tetco_attendance/utils/date_helper.dart';
 import 'package:tetco_attendance/utils/random_color.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -74,6 +76,17 @@ class AppProvider extends ChangeNotifier {
 
   void resetFilter() {
     sStatusFilter = null;
+    notifyListeners();
+  }
+
+  Jalali? pickedDate = Jalali.now();
+  void updatePickedDate(Jalali? date) {
+    pickedDate = date;
+    notifyListeners();
+  }
+
+  void clearPickedDate() {
+    pickedDate = null;
     notifyListeners();
   }
 }

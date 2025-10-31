@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
@@ -7,7 +8,9 @@ import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/widgets/employee_attendance_check_card.dart';
+import 'package:tetco_attendance/packages/flutter_datetime_picker_plus_package/flutter_datetime_picker_plus_package.dart';
 import 'package:tetco_attendance/packages/searchfield_package/searchfield_package.dart';
+import 'package:tetco_attendance/utils/date_helper.dart';
 import 'package:tetco_attendance/utils/my_media_query.dart';
 import 'package:tetco_attendance/utils/popup_menu_option.dart';
 import 'package:tetco_attendance/utils/random_color.dart';
@@ -101,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                                 try {
                                   await showMenu(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     context: context,
                                     position: position,
                                     items: [
@@ -165,21 +169,44 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.arrow_back_ios_new_rounded, size: sizeConstants.iconS),
-                            ),
-                            SizedBox(width: sizeConstants.spacing4),
-                            Text('چهار شنبه، ۳۰ میزان ۱۴۰۴'),
-                            SizedBox(width: sizeConstants.spacing4),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.arrow_forward_ios_rounded, size: sizeConstants.iconS),
-                            ),
-                          ],
+                        Selector<AppProvider, Jalali?>(
+                          selector: (context, appProvider) => appProvider.pickedDate,
+                          builder: (context, pDate, child) {
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    if (pDate != null) {
+                                      context.read<AppProvider>().updatePickedDate(DateHelper.nextDay(pDate));
+                                    }
+                                  },
+                                  icon: Icon(Icons.arrow_back_ios_new_rounded, size: sizeConstants.iconS),
+                                ),
+                                SizedBox(width: sizeConstants.spacing4),
+                                GestureDetector(
+                                  onTap: () async {
+                                    try {
+                                      Jalali? picked = await FlutterDatetimePickerPlusPackage.showAfghanDatePicker(context: context);
+                                      if (picked != null) {
+                                        context.read<AppProvider>().updatePickedDate(picked);
+                                      }
+                                    } catch (e) {}
+                                  },
+                                  child: Text(DateHelper.formatJalaliDate(pDate)),
+                                ),
+                                SizedBox(width: sizeConstants.spacing4),
+                                IconButton(
+                                  onPressed: () {
+                                    if (pDate != null) {
+                                      context.read<AppProvider>().updatePickedDate(DateHelper.previousDay(pDate));
+                                    }
+                                  },
+                                  icon: Icon(Icons.arrow_forward_ios_rounded, size: sizeConstants.iconS),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         IconButton(
                           onPressed: () {

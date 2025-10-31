@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              AppLocalizations.of(context)!.welcome,
+              AppLocalizations.of(context)?.welcome ?? '',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kWhiteColor),
             ),
           ],

@@ -19,6 +19,7 @@ class AppTheme {
         linearTrackColor: kWarningTrackColor,
         refreshBackgroundColor: kWarningBgColor,
       ),
+      datePickerTheme: DatePickerThemeData(locale: Locale('fa')),
       popupMenuTheme: PopupMenuThemeData(
         color: Theme.of(context).scaffoldBackgroundColor,
         textStyle: Theme.of(context).textTheme.titleMedium,
@@ -26,7 +27,10 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: kPrimaryColor,
       cardColor: kGreyColor200,
-
+      menuButtonTheme: MenuButtonThemeData(style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Theme.of(context).scaffoldBackgroundColor))),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(backgroundColor: WidgetStatePropertyAll(Theme.of(context).scaffoldBackgroundColor)),
+      ),
       shadowColor: darkBoxShadowColor,
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
@@ -70,6 +74,11 @@ class AppTheme {
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      menuButtonTheme: MenuButtonThemeData(style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Theme.of(context).scaffoldBackgroundColor))),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(backgroundColor: WidgetStatePropertyAll(Theme.of(context).scaffoldBackgroundColor)),
+      ),
+      datePickerTheme: DatePickerThemeData(locale: Locale('fa')),
       primaryColor: kPrimaryColor,
       shadowColor: lightBoxShadowColor,
       popupMenuTheme: PopupMenuThemeData(
