@@ -7,6 +7,7 @@ import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
+import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/widgets/employee_attendance_check_card.dart';
 import 'package:tetco_attendance/packages/flutter_datetime_picker_plus_package/flutter_datetime_picker_plus_package.dart';
 import 'package:tetco_attendance/packages/searchfield_package/searchfield_package.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _menuKey = GlobalKey();
     try {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        context.read<AppProvider>().populateEmployees();
+        context.read<EmployeeProvider>().populateEmployees();
       });
     } catch (_) {}
   }
@@ -227,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return ValueListenableBuilder(
                 valueListenable: searchController,
                 builder: (context, searchCont, child) {
-                  return Selector<AppProvider, List<EmployeeModel>>(
+                  return Selector<EmployeeProvider, List<EmployeeModel>>(
                     selector: (context, appProvider) => appProvider.employees,
                     builder: (context, employees, child) {
                       List<EmployeeModel> emps = employees;
@@ -260,7 +261,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             employee: emps[index],
                             avatarColor: emps[index].imageHolderColor ?? randomVibrantColorWithAlpha(),
                             onTap: () {},
-                            onPresent: (emp) {},
+                            onPresent: (emp) {
+                              try {
+                                emp = emp.copyWith(status: AttStatusEnums.present);
+                                List<EmployeeModel> list = context.read<EmployeeProvider>().employees;
+                                list.removeWhere((element) => element.id == emp.id);
+                                list.insert(0, emp);
+                                context.read<EmployeeProvider>().updateEmployees(list);
+                              } catch (e) {
+                                print(e.toString());
+                              }
+                            },
                             onAbsent: (emp) {},
                             onDetails: (emp) {},
                             onLate: (emp) {},

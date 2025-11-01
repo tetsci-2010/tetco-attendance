@@ -66,4 +66,37 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get search => 'جستجو';
+
+  @override
+  String get newEmployee => 'کارمند جدید';
+
+  @override
+  String get employeeName => 'نام کارمند';
+
+  @override
+  String get fatherName => 'نام پدر';
+
+  @override
+  String get nickName => 'تخلص';
+
+  @override
+  String get phoneNumber => 'شماره تماس';
+
+  @override
+  String get description => 'توضیحات';
+
+  @override
+  String get gallery => 'گالری';
+
+  @override
+  String get camera => 'دوربین';
+
+  @override
+  String get submit => 'ثبت';
+
+  @override
+  String get cancel => 'لغو';
+
+  @override
+  String get requiredField => 'فیلد الزامی';
 }

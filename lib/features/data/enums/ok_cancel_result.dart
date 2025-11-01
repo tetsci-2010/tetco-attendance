@@ -1,0 +1,4 @@
+enum OkCancelResult {
+  ok,
+  cancel,
+}

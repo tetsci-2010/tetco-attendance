@@ -56,6 +56,8 @@ dependencies:
   persian_datetime_picker:
     path: ./persian-datetime-picker-master
   shamsi_date: ^1.1.1
+  adaptive_dialog: ^2.5.0
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

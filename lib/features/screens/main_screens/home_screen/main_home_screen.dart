@@ -5,7 +5,10 @@ import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/constants/lists.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
+import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/widgets/add_employee_modal_body.dart';
+import 'package:tetco_attendance/utils/popup_helper.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 
 class MainHomeScreen extends StatelessWidget {
@@ -71,7 +74,12 @@ class MainHomeScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(1000)),
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: kWhiteColor,
-          onPressed: () {},
+          onPressed: () async {
+            await PopupHelper.showCustomFormSheet<EmployeeModel?>(
+              context: context,
+              content: AddEmployeeModalBody(),
+            );
+          },
           child: Icon(Icons.person_add_alt_rounded),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

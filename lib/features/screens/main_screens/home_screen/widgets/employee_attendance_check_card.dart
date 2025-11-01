@@ -137,24 +137,25 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: -7,
-                    right: 5,
-                    child: Container(
-                      width: sizeConstants.iconM,
-                      height: sizeConstants.iconM,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 2, color: Theme.of(context).scaffoldBackgroundColor),
-                        color: getStatusColor(employee.status),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        getStatus(context, employee.status),
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kWhiteColor),
+                  if (employee.status != null)
+                    Positioned(
+                      bottom: -7,
+                      right: 5,
+                      child: Container(
+                        width: sizeConstants.iconM,
+                        height: sizeConstants.iconM,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 2, color: Theme.of(context).scaffoldBackgroundColor),
+                          color: getStatusColor(employee.status!),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          getStatus(context, employee.status!),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kWhiteColor),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
               SizedBox(height: sizeConstants.spacing20),

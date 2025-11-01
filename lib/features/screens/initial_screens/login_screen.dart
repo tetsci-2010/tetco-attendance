@@ -11,6 +11,7 @@ import 'package:tetco_attendance/helpers/orientation_helper.dart';
 import 'package:tetco_attendance/packages/toast_package/toast_package.dart';
 import 'package:tetco_attendance/utils/my_media_query.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
+import 'package:tetco_attendance/widgets/custom_form_field.dart';
 import 'package:tetco_attendance/widgets/lottie_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -133,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               textInputType: TextInputType.emailAddress,
                               controller: emailController,
                               labelText: AppLocalizations.of(context)!.emailAddress,
-                              suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
+                              suffix: Icon(Icons.email_outlined, color: kPrimaryColor),
                               onChanged: (value) {},
                               hintText: AppLocalizations.of(context)!.enterEmailAddress,
                               showClearBtn: emailController.text.isNotEmpty,
@@ -157,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 return CustomTextFormField(
                                   controller: passController,
                                   labelText: AppLocalizations.of(context)!.password,
-                                  suffixIcon: GestureDetector(
+                                  suffix: GestureDetector(
                                     onTap: () {
                                       try {
                                         showPass.value = !showPass.value;
@@ -168,6 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onChanged: (value) {},
                                   hintText: AppLocalizations.of(context)!.enterPassword,
                                   showClearBtn: password.text.isNotEmpty,
+                                  
                                   hideValue: !showPasss,
                                   onClearTap: () {},
 
@@ -250,70 +252,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    super.key,
-    this.hintText,
-    required this.suffixIcon,
-    required this.controller,
-    this.onChanged,
-    this.onFieldSubmitted,
-    this.validator,
-    this.labelText,
-    required this.onClearTap,
-    this.hideValue,
-    this.showClearBtn = false,
-    this.focusNode,
-    this.textInputType,
-  });
-
-  final String? hintText;
-  final Widget suffixIcon;
-  final TextEditingController controller;
-  final void Function(String value)? onChanged;
-  final void Function(String value)? onFieldSubmitted;
-  final String? Function(String? value)? validator;
-  final String? labelText;
-  final VoidCallback onClearTap;
-  final bool? hideValue;
-  final bool showClearBtn;
-  final FocusNode? focusNode;
-  final TextInputType? textInputType;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16),
-      child: TextFormField(
-        focusNode: focusNode,
-        controller: controller,
-        onChanged: onChanged,
-        onFieldSubmitted: onFieldSubmitted,
-        validator: validator,
-        obscureText: hideValue ?? false,
-        keyboardType: textInputType,
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kPrimaryColor),
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
-          suffixIcon: showClearBtn
-              ? hideValue == null
-                    ? GestureDetector(
-                        onTap: onClearTap,
-                        child: Icon(
-                          Icons.clear,
-                          color: kRedColor,
-                        ),
-                      )
-                    : suffixIcon
-              : suffixIcon,
-        ),
       ),
     );
   }

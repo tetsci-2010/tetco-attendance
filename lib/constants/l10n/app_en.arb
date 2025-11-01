@@ -17,5 +17,16 @@
   "absent": "Absent",
   "late": "Late",
   "details": "Details",
-  "search": "جستجو"
+  "search": "Search",
+  "newEmployee": "New Employee",
+  "employeeName": "Employee name",
+  "fatherName": "Father name",
+  "nickName": "Nickname",
+  "phoneNumber": "Phone number",
+  "description": "Description",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "requiredField": "Required field"
 }

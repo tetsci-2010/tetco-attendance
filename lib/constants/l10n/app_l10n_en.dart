@@ -64,5 +64,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get details => 'Details';
 
   @override
-  String get search => 'جستجو';
+  String get search => 'Search';
+
+  @override
+  String get newEmployee => 'New Employee';
+
+  @override
+  String get employeeName => 'Employee name';
+
+  @override
+  String get fatherName => 'Father name';
+
+  @override
+  String get nickName => 'Nickname';
+
+  @override
+  String get phoneNumber => 'Phone number';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get requiredField => 'Required field';
 }

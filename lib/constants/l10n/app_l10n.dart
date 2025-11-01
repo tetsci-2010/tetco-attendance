@@ -211,6 +211,72 @@ abstract class AppLocalizations {
   /// In fa, this message translates to:
   /// **'جستجو'**
   String get search;
+
+  /// No description provided for @newEmployee.
+  ///
+  /// In fa, this message translates to:
+  /// **'کارمند جدید'**
+  String get newEmployee;
+
+  /// No description provided for @employeeName.
+  ///
+  /// In fa, this message translates to:
+  /// **'نام کارمند'**
+  String get employeeName;
+
+  /// No description provided for @fatherName.
+  ///
+  /// In fa, this message translates to:
+  /// **'نام پدر'**
+  String get fatherName;
+
+  /// No description provided for @nickName.
+  ///
+  /// In fa, this message translates to:
+  /// **'تخلص'**
+  String get nickName;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In fa, this message translates to:
+  /// **'شماره تماس'**
+  String get phoneNumber;
+
+  /// No description provided for @description.
+  ///
+  /// In fa, this message translates to:
+  /// **'توضیحات'**
+  String get description;
+
+  /// No description provided for @gallery.
+  ///
+  /// In fa, this message translates to:
+  /// **'گالری'**
+  String get gallery;
+
+  /// No description provided for @camera.
+  ///
+  /// In fa, this message translates to:
+  /// **'دوربین'**
+  String get camera;
+
+  /// No description provided for @submit.
+  ///
+  /// In fa, this message translates to:
+  /// **'ثبت'**
+  String get submit;
+
+  /// No description provided for @cancel.
+  ///
+  /// In fa, this message translates to:
+  /// **'لغو'**
+  String get cancel;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In fa, this message translates to:
+  /// **'فیلد الزامی'**
+  String get requiredField;
 }
 
 class _AppLocalizationsDelegate

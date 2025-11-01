@@ -17,5 +17,16 @@
     "absent": "غیر حاضر",
     "late": "تاخیر",
     "details": "جزئیات",
-    "search": "جستجو"
+    "search": "جستجو",
+    "newEmployee": "کارمند جدید",
+    "employeeName": "نام کارمند",
+    "fatherName": "نام پدر",
+    "nickName": "تخلص",
+    "phoneNumber": "شماره تماس",
+    "description": "توضیحات",
+    "gallery": "گالری",
+    "camera": "دوربین",
+    "submit": "ثبت",
+    "cancel": "لغو",
+    "requiredField": "فیلد الزامی"
 }
