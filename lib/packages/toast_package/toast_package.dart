@@ -18,10 +18,10 @@ class ToastPackage {
       type: ToastificationType.info,
       style: toastStyle,
       alignment: toastAlignment,
-      autoCloseDuration: closeDuration,
+      autoCloseDuration: closeDuration ?? Duration(seconds: 3),
       dragToClose: dragToClose,
       closeOnClick: clickToClose,
-      showProgressBar: showProgressBar,
+      showProgressBar: showProgressBar ?? true,
     );
   }
 
@@ -42,10 +42,10 @@ class ToastPackage {
       backgroundColor: kOrangeAccentColor.withAlpha(20),
       style: toastStyle,
       alignment: toastAlignment,
-      autoCloseDuration: closeDuration,
+      autoCloseDuration: closeDuration ?? Duration(seconds: 3),
       dragToClose: dragToClose,
       closeOnClick: clickToClose,
-      showProgressBar: showProgressBar,
+      showProgressBar: showProgressBar ?? true,
     );
   }
 }

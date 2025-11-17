@@ -99,7 +99,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
           maxWidth: sizeConstants.cardStandardWidth,
           maxHeight: sizeConstants.cardStandardWidth,
         ),
-        padding: EdgeInsets.all(sizeConstants.spacing12),
+        padding: EdgeInsets.fromLTRB(sizeConstants.spacing12, sizeConstants.spacing12, sizeConstants.spacing12, sizeConstants.spacing4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -158,11 +158,11 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
                     ),
                 ],
               ),
-              SizedBox(height: sizeConstants.spacing20),
+              SizedBox(height: sizeConstants.spacing12),
               Flexible(
                 child: Text(
                   '${employee.name} ${employee.fName}',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(height: 1),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(height: 1.2),
                 ),
               ),
             ],

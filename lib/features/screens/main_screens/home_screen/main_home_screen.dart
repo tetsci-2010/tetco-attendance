@@ -1,12 +1,16 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/constants/lists.dart';
+import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
+import 'package:tetco_attendance/features/data/repository/online_data_repository/online_idata_repository.dart';
+import 'package:tetco_attendance/features/data/services/employee_service.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/widgets/add_employee_modal_body.dart';
 import 'package:tetco_attendance/utils/popup_helper.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
@@ -70,17 +74,20 @@ class MainHomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(1000)),
-          backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: kWhiteColor,
-          onPressed: () async {
-            await PopupHelper.showCustomFormSheet<EmployeeModel?>(
-              context: context,
-              content: AddEmployeeModalBody(),
-            );
-          },
-          child: Icon(Icons.person_add_alt_rounded),
+        floatingActionButton: BlocProvider<EmployeeBloc>(
+          create: (context) => EmployeeBloc(EmployeeService(onlineRepositoryImp: onlineDataSourceImp)),
+          child: FloatingActionButton(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(1000)),
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: kWhiteColor,
+            onPressed: () async {
+              await PopupHelper.showCustomFormSheet<EmployeeModel?>(
+                context: context,
+                content: AddEmployeeModalBody(),
+              );
+            },
+            child: Icon(Icons.person_add_alt_rounded),
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: Selector<AppProvider, int>(

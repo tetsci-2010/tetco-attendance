@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tetco_attendance/constants/colors.dart';
-import 'package:tetco_attendance/features/data/blocs/localization_bloc/bloc/localization_bloc.dart';
+import 'package:tetco_attendance/features/data/blocs/localization_bloc/localization_bloc.dart';
 import 'package:tetco_attendance/features/data/enums/language.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 

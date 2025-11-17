@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859791268607",
+    "project_id": "tetco-roll",
+    "storage_bucket": "tetco-roll.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859791268607:android:8ecd97ec292b8b8fd30aca",
+        "android_client_info": {
+          "package_name": "com.example.tetco_attendance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbi4nBFon-4RzocuSo3lgVvTVnRoY8X-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

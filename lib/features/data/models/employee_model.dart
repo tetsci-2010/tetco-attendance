@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 
 class EmployeeModel {
-  final int id;
+  final String id;
   final String name;
   final String fName;
   final AttStatusEnums? status;
@@ -24,8 +24,20 @@ class EmployeeModel {
     this.imageHolderColor,
   });
 
+  factory EmployeeModel.fromJson(Map<String, dynamic> json) {
+    return EmployeeModel(
+      id: json['id'],
+      name: json['name'],
+      fName: json['fName'],
+      description: json['description'],
+      nickName: json['nick_name'],
+      phone: json['phone'],
+      status: json['status'],
+    );
+  }
+
   EmployeeModel copyWith({
-    int? id,
+    String? id,
     String? name,
     String? fName,
     AttStatusEnums? status,
