@@ -16,4 +16,12 @@ final class CreateEmployee extends EmployeeEvent {
   List<Object?> get props => [employeeModel];
 }
 
-final class FetchAllEmployees extends EmployeeEvent {}
+final class FetchAllEmployees extends EmployeeEvent {
+  final bool isRefresh;
+  final bool hideLoading;
+
+  const FetchAllEmployees({this.isRefresh = false, this.hideLoading = false});
+
+  @override
+  List<Object?> get props => [isRefresh, hideLoading];
+}

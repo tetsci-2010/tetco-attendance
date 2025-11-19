@@ -18,9 +18,9 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeModel>> fetchAllEmployees() async {
+  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false}) async {
     try {
-      final result = await onlineRepositoryImp.fetchAllEmployees();
+      final result = await onlineRepositoryImp.fetchAllEmployees(isRefresh: isRefresh);
       return result;
     } on AppException catch (_) {
       rethrow;

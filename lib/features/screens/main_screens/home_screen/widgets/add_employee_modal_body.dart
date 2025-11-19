@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
+import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
 import 'package:tetco_attendance/packages/toast_package/toast_package.dart';
+import 'package:tetco_attendance/packages/uuid_package/uuid_package.dart';
 import 'package:tetco_attendance/utils/popup_helper.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 import 'package:tetco_attendance/widgets/custom_form_field.dart';
@@ -170,6 +174,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         // ),
                         SizedBox(height: sizeConstants.spacing20),
                         CustomTextFormField(
+                          disable: state is AddingEmployee,
                           controller: nameController,
                           onClearTap: () {
                             try {
@@ -180,7 +185,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                           hintText: AppLocalizations.of(context)!.employeeName,
                           labelText: AppLocalizations.of(context)!.employeeName,
                           validator: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return AppLocalizations.of(context)!.requiredField;
                             }
                             return null;
@@ -200,6 +205,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         ),
                         SizedBox(height: sizeConstants.spacing12),
                         CustomTextFormField(
+                          disable: state is AddingEmployee,
                           controller: fNameController,
                           onClearTap: () {
                             try {
@@ -220,7 +226,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                             } catch (e) {}
                           },
                           validator: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return AppLocalizations.of(context)!.requiredField;
                             }
                             return null;
@@ -230,6 +236,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         ),
                         SizedBox(height: sizeConstants.spacing12),
                         CustomTextFormField(
+                          disable: state is AddingEmployee,
                           controller: nicknameController,
                           onClearTap: () {
                             try {
@@ -253,6 +260,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         ),
                         SizedBox(height: sizeConstants.spacing12),
                         CustomTextFormField(
+                          disable: state is AddingEmployee,
                           controller: phoneController,
                           onClearTap: () {
                             try {
@@ -277,6 +285,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         ),
                         SizedBox(height: sizeConstants.spacing12),
                         CustomTextFormField(
+                          disable: state is AddingEmployee,
                           controller: descriptionController,
                           onClearTap: () {
                             try {
@@ -314,29 +323,36 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                         ),
                         CustomTextButton(
                           onPressed: () {
-                            try {} catch (e) {
+                            try {
+                              if (formKey.currentState?.validate() == true) {
+                                EmployeeModel employeeModel = EmployeeModel(
+                                  id: UuidPackage.generateNumber(),
+                                  name: nameController.text.trim(),
+                                  fName: fNameController.text.trim(),
+                                  description: descriptionController.text.trim(),
+                                  nickName: nicknameController.text.trim(),
+                                  phone: phoneController.text.trim(),
+                                );
+                                context.read<EmployeeBloc>().add(CreateEmployee(employeeModel: employeeModel));
+                              } else {
+                                HapticFeedback.heavyImpact();
+                              }
+                            } catch (e) {
                               print(e.toString());
                             }
                           },
-                          child: Text(
-                            AppLocalizations.of(context)!.submit,
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kGreenColor),
-                          ),
+                          child: state is AddingEmployee
+                              ? CupertinoActivityIndicator()
+                              : Text(
+                                  AppLocalizations.of(context)!.submit,
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kGreenColor),
+                                ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              if (state is AddingEmployee)
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: kGreyColor,
-                      borderRadius: BorderRadius.circular(sizeConstants.radiusSmall),
-                    ),
-                  ),
-                ),
             ],
           ),
         );

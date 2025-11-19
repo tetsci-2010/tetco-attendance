@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
+import 'package:tetco_attendance/utils/random_color.dart';
 
 class EmployeeProvider extends ChangeNotifier {
   DocumentSnapshot? lastEmpDoc;
@@ -19,6 +20,7 @@ class EmployeeProvider extends ChangeNotifier {
       if (!_employeesMap.containsKey(emp.id)) {
         _employeeOrder.add(emp.id);
       }
+      emp = emp.copyWith(imageHolderColor: randomVibrantColorWithAlpha());
       _employeesMap[emp.id] = emp; // insert or update
     }
     notifyListeners();

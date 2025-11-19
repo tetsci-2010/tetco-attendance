@@ -132,7 +132,7 @@ class EmployeeAttendanceCheckCard extends StatelessWidget {
                     alignment: Alignment.center,
                     child: FittedBox(
                       child: Text(
-                        '${employee.name[0]}.${employee.fName[0]}',
+                        '${employee.name.isNotEmpty ? employee.name[0] : ''}${employee.name.isNotEmpty ? '.' : ''}${employee.fName.isNotEmpty ? employee.fName[0] : ''}',
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),

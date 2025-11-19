@@ -23,9 +23,9 @@ final class OnlineIDataRepositoryImp implements OnlineIDataRepository {
   }
 
   @override
-  Future<List<EmployeeModel>> fetchAllEmployees() async {
+  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false}) async {
     try {
-      final result = await onlineIDataDataSource.fetchAllEmployees();
+      final result = await onlineIDataDataSource.fetchAllEmployees(isRefresh: isRefresh);
       return result;
     } on AppException catch (_) {
       rethrow;

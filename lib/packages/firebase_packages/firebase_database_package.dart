@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
 
 class FirebaseFirestoreService {
+  static DocumentSnapshot? lastDoc;
+
   /// CREATE / INSERT
   static Future<void> create(String collectionPath, Map<String, dynamic> data, {String? id}) async {
     try {
@@ -49,15 +51,27 @@ class FirebaseFirestoreService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> readPaginate(String collection, {int limit = 30}) async {
+  static Future<List<Map<String, dynamic>>> readPaginate(String collection, {int limit = 30, bool refresh = false}) async {
     try {
       final FirebaseFirestore _db = FirebaseFirestore.instance;
-      final query = await _db.collection(collection).limit(limit).get();
-      List<Map<String, dynamic>> sss = [];
-      for (var doc in query.docs) {
-        sss.add(doc.data());
+      if (refresh) lastDoc = null;
+      Query query = await _db.collection(collection).orderBy('updated_at', descending: true).limit(limit);
+      if (lastDoc != null) {
+        query = query.startAfterDocument(lastDoc!);
       }
-      return sss;
+      QuerySnapshot snapshot = await query.get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
+      lastDoc = snapshot.docs.last;
+
+      return snapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          ...doc.data() as Map<String, dynamic>,
+        };
+      }).toList();
     } on FirebaseException catch (e) {
       throw AppException(errorMessage: '${e.message} - ${e.stackTrace.toString()}', statusCode: e.code);
     } catch (e) {

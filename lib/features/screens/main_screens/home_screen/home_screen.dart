@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/colors.dart';
+import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
@@ -31,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController searchController;
+  late ScrollController screenController;
   late GlobalKey _menuKey;
 
   @override
@@ -38,11 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     searchController = TextEditingController();
     _menuKey = GlobalKey();
-    // try {
-    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //     context.read<EmployeeProvider>().populateEmployees();
-    //   });
-    // } catch (_) {}
+    screenController = ScrollController();
+    screenController.addListener(() {
+      if (!screenController.hasClients) return;
+
+      final atBottom = screenController.position.pixels == screenController.position.maxScrollExtent;
+
+      if (atBottom) {
+        context.read<EmployeeBloc>().add(FetchAllEmployees(isRefresh: true));
+      }
+    });
     context.read<EmployeeBloc>().add(FetchAllEmployees());
   }
 
@@ -50,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     searchController.dispose();
     _menuKey.currentState?.dispose();
+    screenController.dispose();
     super.dispose();
   }
 
@@ -59,10 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
       listener: (context, state) {
         if (state is FetchAllEmployeesFailure) {
           ToastPackage.showSimpleToast(message: state.errorMessage);
-        } else if (state is FetchAllEmployeesSuccess) {
-          print(state.employees.length);
-          print(context.read<EmployeeProvider>().employees);
-          ToastPackage.showSimpleToast(message: 'success');
         }
       },
       builder: (context, state) {
@@ -264,9 +269,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               emps = emps.where((element) => element.status == statusFilter).toList();
                             }
                           }
-                          print(Provider.of<EmployeeProvider>(context).employees);
                           if (state is FetchingAllEmployees) {
-                            return CircularProgressIndicator();
+                            return CustomLoadingIndicator();
                           } else if (state is FetchAllEmployeesFailure) {
                             return RetryIcon(
                               message: state.errorMessage,
@@ -285,23 +289,73 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             );
                           }
-                          return MasonryGridView.builder(
-                            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-                            padding: EdgeInsets.all(sizeConstants.spacing16),
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            itemCount: emps.length,
-                            itemBuilder: (context, index) {
-                              return EmployeeAttendanceCheckCard(
-                                employee: emps[index],
-                                avatarColor: emps[index].imageHolderColor ?? randomVibrantColorWithAlpha(),
-                                onTap: () {},
-                                onPresent: (emp) {},
-                                onAbsent: (emp) {},
-                                onDetails: (emp) {},
-                                onLate: (emp) {},
-                              );
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              try {
+                                context.read<EmployeeBloc>().add(FetchAllEmployees(isRefresh: true));
+                              } catch (e) {}
                             },
+                            child: CustomScrollView(
+                              controller: screenController,
+                              physics: Constants.bouncingScrollPhysics,
+                              slivers: [
+                                SliverPadding(
+                                  padding: EdgeInsets.all(sizeConstants.spacing16),
+                                  sliver: SliverMasonryGrid(
+                                    gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                    ),
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        return Stack(
+                                          children: [
+                                            EmployeeAttendanceCheckCard(
+                                              onTap: () {},
+                                              onPresent: (emp) {},
+                                              onAbsent: (emp) {},
+                                              onDetails: (emp) {},
+                                              onLate: (emp) {},
+                                              employee: emps[index],
+                                              avatarColor: emps[index].imageHolderColor ?? randomVibrantColorWithAlpha(),
+                                            ),
+                                            Positioned(top: 0, left: 20, child: Text('$index')),
+                                          ],
+                                        );
+                                      },
+                                      childCount: emps.length,
+                                    ),
+                                  ),
+                                ),
+                                if (screenController.hasClients && !(screenController.position.maxScrollExtent > 0))
+                                  SliverToBoxAdapter(
+                                    child: state is! FetchAllEmployeesSuccess
+                                        ? CircularProgressIndicator()
+                                        : GestureDetector(
+                                            onTap: () {
+                                              try {
+                                                context.read<EmployeeBloc>().add(FetchAllEmployees(hideLoading: true));
+                                              } catch (e) {}
+                                            },
+                                            child: Center(child: Text('بیشتر')),
+                                          ),
+                                  ),
+                                if (state is FetchAllEmployeesSuccess)
+                                  if (state.hasMore && (screenController.hasClients && screenController.position.maxScrollExtent > 0))
+                                    SliverToBoxAdapter(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(bottom: sizeConstants.spacing32),
+                                        child: CustomLoadingIndicator(
+                                          spinner: SpinKitFadingCircle(
+                                            color: Theme.of(context).primaryColor,
+                                            size: sizeConstants.iconL,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -313,6 +367,23 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         );
       },
+    );
+  }
+}
+
+class CustomLoadingIndicator extends StatelessWidget {
+  const CustomLoadingIndicator({super.key, this.spinner});
+  final Widget? spinner;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child:
+          spinner ??
+          SpinKitDualRing(
+            color: Theme.of(context).primaryColor,
+            lineWidth: 2,
+          ),
     );
   }
 }

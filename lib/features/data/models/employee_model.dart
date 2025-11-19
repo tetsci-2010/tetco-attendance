@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 
@@ -11,6 +12,8 @@ class EmployeeModel {
   final String? image;
   final String? description;
   final Color? imageHolderColor;
+  final String? createdAt;
+  final String? updatedAt;
 
   const EmployeeModel({
     required this.id,
@@ -22,9 +25,13 @@ class EmployeeModel {
     this.image,
     this.description,
     this.imageHolderColor,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
+    Timestamp ca = json['created_at'];
+    Timestamp ua = json['updated_at'];
     return EmployeeModel(
       id: json['id'],
       name: json['name'],
@@ -33,6 +40,8 @@ class EmployeeModel {
       nickName: json['nick_name'],
       phone: json['phone'],
       status: json['status'],
+      createdAt: ca.toDate().toIso8601String(),
+      updatedAt: ua.toDate().toIso8601String(),
     );
   }
 

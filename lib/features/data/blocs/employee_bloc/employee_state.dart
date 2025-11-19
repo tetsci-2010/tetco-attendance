@@ -33,10 +33,11 @@ final class FetchingAllEmployees extends EmployeeState {}
 
 final class FetchAllEmployeesSuccess extends EmployeeState {
   final List<EmployeeModel> employees;
+  final bool hasMore;
 
-  const FetchAllEmployeesSuccess({required this.employees});
+  const FetchAllEmployeesSuccess({required this.employees, required this.hasMore});
   @override
-  List<Object?> get props => [employees];
+  List<Object?> get props => [employees, hasMore];
 }
 
 final class FetchAllEmployeesFailure extends EmployeeState {

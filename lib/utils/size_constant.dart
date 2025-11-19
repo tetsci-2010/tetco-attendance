@@ -7,6 +7,7 @@ import 'package:tetco_attendance/utils/my_media_query.dart';
 ///
 /// Call `ScreenUtilInit` in your app’s root widget (see usage below).
 class SizeConstants {
+  double mobileView = 660;
   // Base Spacing (Material 3 standard spacing steps)
   double get spacing2 => 2.w;
   double get spacing4 => 4.w;

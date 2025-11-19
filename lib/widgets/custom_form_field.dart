@@ -5,6 +5,7 @@ import 'package:tetco_attendance/utils/size_constant.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
+    this.disable = false,
     this.hintText,
     this.suffix,
     required this.controller,
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
   });
 
+  final bool disable;
   final String? hintText;
   final Widget? suffix;
   final TextEditingController controller;
@@ -45,7 +47,9 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16),
       child: TextFormField(
+        key: GlobalKey(),
         focusNode: focusNode,
+        enabled: !disable,
         controller: controller,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
