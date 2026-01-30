@@ -51,19 +51,37 @@ class FirebaseFirestoreService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> readPaginate(String collection, {int limit = 30, bool refresh = false}) async {
+  static Future<List<Map<String, dynamic>>> readPaginate(
+    String collection, {
+    int limit = 30,
+    bool refresh = false,
+    String? searchKey,
+    String? status,
+  }) async {
     try {
       final FirebaseFirestore _db = FirebaseFirestore.instance;
       if (refresh) lastDoc = null;
-      Query query = await _db.collection(collection).orderBy('updated_at', descending: true).limit(limit);
+      Query? query;
+      // if (searchKey == null) {
+      //   if (status == null) {
+      query = await _db.collection(collection).orderBy('updated_at', descending: true).orderBy(FieldPath.documentId).limit(limit);
+      //   } else {
+      //     query = await _db.collection(collection).orderBy('status').where('status', isEqualTo: status).limit(limit);
+      //   }
+      // } else {
+      //   if (status == null) {
+      //     query = await _db.collection(collection).orderBy('name').startAt([searchKey]).endAt(['$searchKey\uf8ff']).limit(limit);
+      //   } else {
+      //     query = await _db.collection(collection).orderBy('status').where('status', isEqualTo: status).limit(limit);
+      //   }
+      // }
       if (lastDoc != null) {
         query = query.startAfterDocument(lastDoc!);
       }
       QuerySnapshot snapshot = await query.get();
 
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
+      if (snapshot.docs.isEmpty) return [];
+
       lastDoc = snapshot.docs.last;
 
       return snapshot.docs.map((doc) {

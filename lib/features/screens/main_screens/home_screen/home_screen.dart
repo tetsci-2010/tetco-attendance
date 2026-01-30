@@ -328,19 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                if (screenController.hasClients && !(screenController.position.maxScrollExtent > 0))
-                                  SliverToBoxAdapter(
-                                    child: state is! FetchAllEmployeesSuccess
-                                        ? CircularProgressIndicator()
-                                        : GestureDetector(
-                                            onTap: () {
-                                              try {
-                                                context.read<EmployeeBloc>().add(FetchAllEmployees(hideLoading: true));
-                                              } catch (e) {}
-                                            },
-                                            child: Center(child: Text('بیشتر')),
-                                          ),
-                                  ),
+
                                 if (state is FetchAllEmployeesSuccess)
                                   if (state.hasMore && (screenController.hasClients && screenController.position.maxScrollExtent > 0))
                                     SliverToBoxAdapter(

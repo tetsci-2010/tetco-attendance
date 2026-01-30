@@ -34,7 +34,11 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         isLoading = true;
         emit(FetchingAllEmployees());
       }
-      final result = await employeeService.fetchAllEmployees(isRefresh: event.isRefresh);
+      final result = await employeeService.fetchAllEmployees(
+        isRefresh: event.isRefresh,
+        searchKey: event.searchKey,
+        status: event.status,
+      );
       if (result.isEmpty) {
         hasMore = false;
       } else {

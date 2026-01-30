@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
 import 'package:tetco_attendance/features/data/models/employee_model.dart';
-import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
 import 'package:tetco_attendance/packages/firebase_packages/firebase_database_package.dart';
 import 'package:tetco_attendance/packages/uuid_package/uuid_package.dart';
-import 'package:tetco_attendance/utils/dependency_injection.dart';
 
 abstract class OnlineIDataDataSource {
   Future<EmployeeModel> createEmployee(EmployeeModel employee);
-  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false});
+  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false, String? searchKey, String? status});
 }
 
 final class OnlineDataSourceImp implements OnlineIDataDataSource {
@@ -47,16 +44,19 @@ final class OnlineDataSourceImp implements OnlineIDataDataSource {
   }
 
   @override
-  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false}) async {
+  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false, String? searchKey, String? status}) async {
     try {
-      List<Map<String, dynamic>> employees = await FirebaseFirestoreService.readPaginate('employees', refresh: isRefresh, limit: 15);
+      List<Map<String, dynamic>> employees = await FirebaseFirestoreService.readPaginate(
+        'employees',
+        refresh: isRefresh,
+        limit: 15,
+        searchKey: searchKey,
+      );
       List<EmployeeModel> pEmployees = [];
       for (var i = 0; i < employees.length; i++) {
         EmployeeModel emp = EmployeeModel.fromJson(employees[i]);
-        pEmployees.add(emp);
+        pEmployees.insert(0, emp);
       }
-      if (isRefresh) di<EmployeeProvider>().clearEmployees();
-      di<EmployeeProvider>().addEmployees(pEmployees);
       return pEmployees;
     } on FirebaseException catch (e) {
       throw AppException(errorMessage: e.toString(), statusCode: e.code);

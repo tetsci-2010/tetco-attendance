@@ -18,7 +18,7 @@ class EmployeeService {
     }
   }
 
-  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false}) async {
+  Future<List<EmployeeModel>> fetchAllEmployees({bool isRefresh = false, String? searchKey, String? status}) async {
     try {
       final result = await onlineRepositoryImp.fetchAllEmployees(isRefresh: isRefresh);
       return result;

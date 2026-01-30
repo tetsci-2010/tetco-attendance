@@ -16,6 +16,7 @@ class EmployeeProvider extends ChangeNotifier {
 
   /// Add a batch of employees (for pagination)
   void addEmployees(List<EmployeeModel> newEmployees) {
+    print(newEmployees);
     for (var emp in newEmployees) {
       if (!_employeesMap.containsKey(emp.id)) {
         _employeeOrder.add(emp.id);

@@ -19,9 +19,16 @@ final class CreateEmployee extends EmployeeEvent {
 final class FetchAllEmployees extends EmployeeEvent {
   final bool isRefresh;
   final bool hideLoading;
+  final String? searchKey;
+  final String? status;
 
-  const FetchAllEmployees({this.isRefresh = false, this.hideLoading = false});
+  const FetchAllEmployees({
+    this.isRefresh = false,
+    this.hideLoading = false,
+    this.searchKey,
+    this.status,
+  });
 
   @override
-  List<Object?> get props => [isRefresh, hideLoading];
+  List<Object?> get props => [isRefresh, hideLoading, searchKey, status];
 }
