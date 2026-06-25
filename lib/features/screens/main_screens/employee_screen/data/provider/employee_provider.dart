@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 import 'package:tetco_attendance/utils/random_color.dart';
 
 class EmployeeProvider extends ChangeNotifier {

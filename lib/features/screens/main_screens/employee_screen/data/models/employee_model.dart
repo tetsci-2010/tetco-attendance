@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
+import 'package:tetco_attendance/features/data/models/employee_role.dart';
+import 'package:tetco_attendance/features/screens/main_screens/projects_screen/data/models/project_model.dart';
 
 class EmployeeModel {
   final String id;
@@ -12,6 +14,8 @@ class EmployeeModel {
   final String? image;
   final String? description;
   final Color? imageHolderColor;
+  final EmployeeRole role;
+  final List<ProjectModel>? projects;
   final String? createdAt;
   final String? updatedAt;
 
@@ -25,6 +29,8 @@ class EmployeeModel {
     this.image,
     this.description,
     this.imageHolderColor,
+    required this.role,
+    this.projects,
     this.createdAt,
     this.updatedAt,
   });
@@ -40,6 +46,8 @@ class EmployeeModel {
       nickName: json['nick_name'],
       phone: json['phone'],
       status: json['status'],
+      role: EmployeeRole.fromJson(json['role']),
+      projects: (json['projects'] as List).map((e) => ProjectModel.fromJson(e)).toList(),
       createdAt: ca.toDate().toIso8601String(),
       updatedAt: ua.toDate().toIso8601String(),
     );
@@ -55,6 +63,10 @@ class EmployeeModel {
     String? image,
     String? description,
     Color? imageHolderColor,
+    EmployeeRole? role,
+    List<ProjectModel>? projects,
+    String? createdAt,
+    String? updatedAt,
   }) {
     return EmployeeModel(
       id: id ?? this.id,
@@ -66,6 +78,10 @@ class EmployeeModel {
       phone: phone ?? this.phone,
       status: status ?? this.status,
       description: description ?? this.description,
+      role: role ?? this.role,
+      projects: projects ?? this.projects,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

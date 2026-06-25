@@ -8,12 +8,12 @@ class CustomTextFormField extends StatelessWidget {
     this.disable = false,
     this.hintText,
     this.suffix,
-    required this.controller,
+    this.controller,
     this.onChanged,
     this.onFieldSubmitted,
     this.validator,
     this.labelText,
-    required this.onClearTap,
+    this.onClearTap,
     this.hideValue,
     this.showClearBtn = false,
     this.focusNode,
@@ -21,24 +21,28 @@ class CustomTextFormField extends StatelessWidget {
     this.isRequired = false,
     this.isDescription = false,
     this.suffixIcon,
+    this.prefix,
+    this.prefixIcon,
   });
 
   final bool disable;
   final String? hintText;
-  final Widget? suffix;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final void Function(String value)? onChanged;
   final void Function(String value)? onFieldSubmitted;
   final String? Function(String? value)? validator;
   final String? labelText;
-  final VoidCallback onClearTap;
+  final VoidCallback? onClearTap;
   final bool? hideValue;
   final bool showClearBtn;
   final FocusNode? focusNode;
   final TextInputType? textInputType;
   final bool isRequired;
   final bool isDescription;
+  final Widget? suffix;
   final IconData? suffixIcon;
+  final Widget? prefix;
+  final IconData? prefixIcon;
   final TextInputAction normalInputAction = TextInputAction.done;
   final TextInputAction descInputAction = TextInputAction.newline;
 
@@ -60,6 +64,7 @@ class CustomTextFormField extends StatelessWidget {
         textInputAction: isDescription ? descInputAction : normalInputAction,
         maxLines: isDescription ? 6 : 1,
         decoration: InputDecoration(
+          errorStyle: Theme.of(context).textTheme.titleSmall!.copyWith(color: kRedColor),
           hintText: hintText,
           labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).primaryColor),
           label: isRequired
@@ -84,6 +89,9 @@ class CustomTextFormField extends StatelessWidget {
                 )
               : null,
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: kPrimaryColor.withAlpha(80), fontWeight: FontWeight.bold),
+          prefix: prefix,
+          prefixIconColor: Theme.of(context).primaryColor,
+          prefixIcon: Icon(prefixIcon),
           suffixIcon: showClearBtn
               ? hideValue == null
                     ? GestureDetector(

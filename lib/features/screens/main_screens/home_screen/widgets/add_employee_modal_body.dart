@@ -6,8 +6,9 @@ import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
-import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
+import 'package:tetco_attendance/features/data/models/employee_role.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 import 'package:tetco_attendance/packages/toast_package/toast_package.dart';
 import 'package:tetco_attendance/packages/uuid_package/uuid_package.dart';
 import 'package:tetco_attendance/utils/popup_helper.dart';
@@ -332,6 +333,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                                   description: descriptionController.text.trim(),
                                   nickName: nicknameController.text.trim(),
                                   phone: phoneController.text.trim(),
+                                  role: EmployeeRole(id: 1, role: 'گارگر ساده')
                                 );
                                 context.read<EmployeeBloc>().add(CreateEmployee(employeeModel: employeeModel));
                               } else {

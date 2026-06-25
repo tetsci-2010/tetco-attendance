@@ -1,6 +1,6 @@
 import 'package:tetco_attendance/constants/exceptions.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/repository/online_data_repository/online_idata_repository.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 
 class EmployeeService {
   final OnlineIDataRepositoryImp onlineRepositoryImp;

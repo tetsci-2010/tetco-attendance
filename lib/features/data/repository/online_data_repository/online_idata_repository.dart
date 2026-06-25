@@ -1,7 +1,7 @@
 import 'package:tetco_attendance/constants/exceptions.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
-import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
 import 'package:tetco_attendance/features/data/source/online_data_data_source/online_idata_data_source.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 import 'package:tetco_attendance/utils/dependency_injection.dart';
 
 final onlineDataSourceImp = OnlineIDataRepositoryImp(onlineIDataDataSource: OnlineDataSourceImp());

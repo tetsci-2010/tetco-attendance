@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/data/services/employee_service.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 
 part 'employee_event.dart';
 part 'employee_state.dart';

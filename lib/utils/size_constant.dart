@@ -84,14 +84,14 @@ class SizeConstants {
   double avatarResponsive(BuildContext context, double scale) => getMediaQueryWidth(context, scale) * 0.25;
 
   // font sizes
-  double get fontDisplayLarge => 40.sp; // app name / splash
-  double get fontDisplayMedium => 36.sp; // big hero text
-  double get fontHeadlineLarge => 32.sp; // page title
-  double get fontHeadlineMedium => 28.sp; // section title
-  double get fontTitleLarge => 24.sp; // card / dialog title
-  double get fontTitleMedium => 22.sp; // medium heading
-  double get fontBodyLarge => 18.sp; // regular readable body
-  double get fontBodyMedium => 16.sp; // secondary text
+  double get fontDisplayLarge => 46.sp; // app name / splash
+  double get fontDisplayMedium => 40.sp; // big hero text
+  double get fontHeadlineLarge => 36.sp; // page title
+  double get fontHeadlineMedium => 32.sp; // section title
+  double get fontTitleLarge => 28.sp; // card / dialog title
+  double get fontTitleMedium => 24.sp; // medium heading
+  double get fontBodyLarge => 22.sp; // regular readable body
+  double get fontBodyMedium => 18.sp; // secondary text
   double get fontLabelLarge => 12.sp; // button text
   double get fontLabelSmall => 8.sp; // caption / helper text
 }

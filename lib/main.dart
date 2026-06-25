@@ -7,7 +7,9 @@ import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/blocs/localization_bloc/localization_bloc.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
-import 'package:tetco_attendance/features/data/providers/employee_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
+import 'package:tetco_attendance/features/data/providers/project_attendance_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/projects_screen/data/providers/project_provider.dart';
 import 'package:tetco_attendance/utils/app_theme.dart';
 import 'package:tetco_attendance/utils/app_router.dart';
 import 'package:tetco_attendance/utils/dependency_injection.dart';
@@ -30,6 +32,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => di<AppProvider>()),
         ChangeNotifierProvider(create: (context) => di<EmployeeProvider>()),
+        ChangeNotifierProvider(create: (context) => di<ProjectProvider>()),
+        ChangeNotifierProvider(create: (context) => di<ProjectAttendanceProvider>()),
       ],
       child: const MyApp(),
     ),

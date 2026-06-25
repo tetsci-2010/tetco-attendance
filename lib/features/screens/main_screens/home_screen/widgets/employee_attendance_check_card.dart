@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
-import 'package:tetco_attendance/features/data/models/employee_model.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/main_home_screen.dart';
 import 'package:tetco_attendance/utils/popup_menu_option.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';

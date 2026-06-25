@@ -14,6 +14,12 @@ class AppTheme {
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: kPrimaryColor,
+        iconTheme: IconThemeData(color: kWhiteColor),
+        actionsIconTheme: IconThemeData(color: kWhiteColor),
+        titleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: kWhiteColor, fontWeight: FontWeight.bold, fontFamily: 'BYekan'),
+      ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: kPrimaryColor,
         linearTrackColor: kWarningTrackColor,
@@ -161,6 +167,7 @@ TextTheme getLightTextTheme() {
     ),
     bodyMedium: TextStyle(
       fontSize: sizeConstants.fontBodyMedium,
+      fontWeight: FontWeight.bold,
       color: kBlackColor87,
     ),
     labelLarge: TextStyle(
@@ -211,6 +218,7 @@ TextTheme getDarkTextTheme() {
     ),
     bodyMedium: TextStyle(
       fontSize: sizeConstants.fontBodyMedium,
+      fontWeight: FontWeight.bold,
       color: kWhiteColor70,
     ),
     labelLarge: TextStyle(
