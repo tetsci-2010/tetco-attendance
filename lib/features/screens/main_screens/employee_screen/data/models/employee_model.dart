@@ -35,7 +35,7 @@ class EmployeeModel {
     this.updatedAt,
   });
 
-  factory EmployeeModel.fromJson(Map<String, dynamic> json) {
+  factory EmployeeModel.fromJson(Map<String, dynamic> json, EmployeeRole role) {
     Timestamp ca = json['created_at'];
     Timestamp ua = json['updated_at'];
     return EmployeeModel(
@@ -46,8 +46,8 @@ class EmployeeModel {
       nickName: json['nick_name'],
       phone: json['phone'],
       status: json['status'],
-      role: EmployeeRole.fromJson(json['role']),
-      projects: (json['projects'] as List).map((e) => ProjectModel.fromJson(e)).toList(),
+      role: role,
+      projects: json['projects'],
       createdAt: ca.toDate().toIso8601String(),
       updatedAt: ua.toDate().toIso8601String(),
     );

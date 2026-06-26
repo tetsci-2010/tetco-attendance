@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
-import 'package:tetco_attendance/features/data/services/employee_service.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_create_model.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/service/employee_service.dart';
 
 part 'employee_event.dart';
 part 'employee_state.dart';
@@ -20,7 +21,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       emit(AddingEmployee());
       final result = await employeeService.createEmployee(event.employeeModel);
       add(FetchAllEmployees(hideLoading: true));
-      emit(AddEmployeeSuccess(employee: result));
+      emit(AddEmployeeSuccess(message: result));
     } on AppException catch (e) {
       emit(AddEmployeeFailure(errorMessage: e.errorMessage, statusCode: e.statusCode));
     } catch (e) {
@@ -34,7 +35,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         isLoading = true;
         emit(FetchingAllEmployees());
       }
-      final result = await employeeService.fetchAllEmployees(
+      final result = await employeeService.fetchEmployees(
         isRefresh: event.isRefresh,
         searchKey: event.searchKey,
         status: event.status,

@@ -12,7 +12,13 @@ class EmployeeProvider extends ChangeNotifier {
   // Optional: maintain order for UI
   List<String> _employeeOrder = [];
 
-  List<EmployeeModel> get employees => _employeeOrder.map((id) => _employeesMap[id]!).toList();
+  List<EmployeeModel> employees = [];
+  void updateEmployees(List<EmployeeModel> employees) {
+    this.employees = employees;
+    notifyListeners();
+  }
+
+  // List<EmployeeModel> get employees => _employeeOrder.map((id) => _employeesMap[id]!).toList();
 
   /// Add a batch of employees (for pagination)
   void addEmployees(List<EmployeeModel> newEmployees) {

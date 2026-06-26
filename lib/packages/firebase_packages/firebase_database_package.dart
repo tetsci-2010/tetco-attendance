@@ -62,19 +62,8 @@ class FirebaseFirestoreService {
       final FirebaseFirestore _db = FirebaseFirestore.instance;
       if (refresh) lastDoc = null;
       Query? query;
-      // if (searchKey == null) {
-      //   if (status == null) {
       query = await _db.collection(collection).orderBy('updated_at', descending: true).orderBy(FieldPath.documentId).limit(limit);
-      //   } else {
-      //     query = await _db.collection(collection).orderBy('status').where('status', isEqualTo: status).limit(limit);
-      //   }
-      // } else {
-      //   if (status == null) {
-      //     query = await _db.collection(collection).orderBy('name').startAt([searchKey]).endAt(['$searchKey\uf8ff']).limit(limit);
-      //   } else {
-      //     query = await _db.collection(collection).orderBy('status').where('status', isEqualTo: status).limit(limit);
-      //   }
-      // }
+
       if (lastDoc != null) {
         query = query.startAfterDocument(lastDoc!);
       }

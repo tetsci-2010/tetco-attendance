@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
-import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/models/employee_role.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
@@ -335,7 +335,7 @@ class _AddEmployeeModalBodyState extends State<AddEmployeeModalBody> {
                                   phone: phoneController.text.trim(),
                                   role: EmployeeRole(id: 1, role: 'گارگر ساده')
                                 );
-                                context.read<EmployeeBloc>().add(CreateEmployee(employeeModel: employeeModel));
+                                // context.read<EmployeeBloc>().add(CreateEmployee(employeeModel: employeeModel));
                               } else {
                                 HapticFeedback.heavyImpact();
                               }

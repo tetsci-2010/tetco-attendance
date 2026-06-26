@@ -8,7 +8,7 @@ sealed class EmployeeEvent extends Equatable {
 }
 
 final class CreateEmployee extends EmployeeEvent {
-  final EmployeeModel employeeModel;
+  final EmployeeCreateModel employeeModel;
 
   const CreateEmployee({required this.employeeModel});
 

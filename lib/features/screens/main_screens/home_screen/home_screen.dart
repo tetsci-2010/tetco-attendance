@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
-import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';

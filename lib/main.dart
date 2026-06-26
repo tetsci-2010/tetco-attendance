@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
-import 'package:tetco_attendance/features/data/blocs/employee_bloc/employee_bloc.dart';
+import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/employee_bloc/employee_bloc.dart';
 import 'package:tetco_attendance/features/data/blocs/localization_bloc/localization_bloc.dart';
 import 'package:tetco_attendance/features/data/providers/app_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';

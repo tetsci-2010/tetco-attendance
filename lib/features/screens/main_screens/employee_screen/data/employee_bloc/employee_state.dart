@@ -12,12 +12,12 @@ final class AddEmployeeInitial extends EmployeeState {}
 final class AddingEmployee extends EmployeeState {}
 
 final class AddEmployeeSuccess extends EmployeeState {
-  final EmployeeModel employee;
+  final String message;
 
-  const AddEmployeeSuccess({required this.employee});
+  const AddEmployeeSuccess({required this.message});
 
   @override
-  List<Object> get props => [employee];
+  List<Object> get props => [message];
 }
 
 final class AddEmployeeFailure extends EmployeeState {
