@@ -42,6 +42,7 @@ class SizeConstants {
   double get radiusMedium => 8.r;
   double get radiusLarge => 16.r;
   double get radiusXLarge => 28.r;
+  double get radiusMax => 1000.r;
 
   // Common widget heights
   double get buttonHeight => 48.h;

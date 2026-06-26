@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tetco_attendance/constants/colors.dart';
 import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/images_paths.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/data/enums/att_status_enums.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/blocs/home_init_bloc/home_init_bloc.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/models/home_initial_model.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/providers/home_provider.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/repository/local_ihome_repository.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/repository/online_ihome_repository.dart';
+import 'package:tetco_attendance/features/screens/main_screens/home_screen/data/service/home_service.dart';
 import 'package:tetco_attendance/features/screens/main_screens/projects_screen/data/providers/project_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
-import 'package:tetco_attendance/features/screens/main_screens/persian_calendar_screen/persian_calendar_screen.dart';
+import 'package:tetco_attendance/features/screens/main_screens/attendance_screen/attendance_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/employee_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/projects_screen/projects_screen.dart';
+import 'package:tetco_attendance/packages/toast_package/toast_package.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
 
 enum _HomePeriod { daily, weekly, monthly, annual }
@@ -33,127 +42,153 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final employees = context.watch<EmployeeProvider>().employees;
-    final projectProvider = context.watch<ProjectProvider>();
-    final summary = _AttendanceSummary.fromEmployees(employees);
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 92.h,
-          titleSpacing: sizeConstants.spacing16,
-          title: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(ImagesPaths.demoProfileJpg),
-                radius: sizeConstants.avatarSmall,
-              ),
-              SizedBox(width: sizeConstants.spacing12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'سلام، خوش آمدید',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: kWhiteColor70,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: sizeConstants.spacing4),
-                    Text(
-                      'داشبورد حضور و غیاب',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: kWhiteColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+    return ChangeNotifierProvider(
+      create: (context) => HomeProvider(),
+      builder: (context, child) {
+        return Consumer<HomeProvider>(
+          builder: (context, homeProvider, child) {
+            return BlocProvider<HomeInitBloc>(
+              create: (context) => HomeInitBloc(
+                HomeService(
+                  onlineHomeRepositoryImp: OnlineIHomeRepository.onlineHomeRepositoryImp,
+                  localHomeRepositoryImp: LocalIHomeRepository.localHomeRepositoryImp,
                 ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsetsDirectional.only(end: sizeConstants.spacing12),
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  IconButton(
-                    tooltip: 'اعلان‌ها',
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_active_rounded),
-                  ),
-                  Positioned(
-                    top: 10.h,
-                    right: 10.w,
-                    child: Container(
-                      width: 9.w,
-                      height: 9.w,
-                      decoration: const BoxDecoration(
-                        color: kWarningColor,
-                        shape: BoxShape.circle,
+              )..add(InitializeHome()),
+              child: BlocConsumer<HomeInitBloc, HomeInitState>(
+                listener: (context, state) {
+                  if (state is HomeSuccess) {
+                    ToastPackage.showSimpleToast(message: 'success');
+                    context.read<HomeProvider>().updateHomeInit(state.homeInitialModel);
+                  } else if (state is HomeFailure) {
+                    ToastPackage.showSimpleToast(message: state.errorMessage);
+                  }
+                },
+                builder: (context, state) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      toolbarHeight: 92.h,
+                      titleSpacing: sizeConstants.spacing16,
+                      title: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: AssetImage(ImagesPaths.demoProfileJpg),
+                            radius: sizeConstants.avatarSmall,
+                          ),
+                          SizedBox(width: sizeConstants.spacing12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'سلام، خوش آمدید',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: kWhiteColor70,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: sizeConstants.spacing4),
+                                Text(
+                                  'داشبورد حضور و غیاب',
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: kWhiteColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(end: sizeConstants.spacing12),
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              IconButton(
+                                tooltip: 'اعلان‌ها',
+                                onPressed: () {},
+                                icon: const Icon(Icons.notifications_active_rounded),
+                              ),
+                              Positioned(
+                                top: 10.h,
+                                right: 10.w,
+                                child: Container(
+                                  width: 9.w,
+                                  height: 9.w,
+                                  decoration: const BoxDecoration(
+                                    color: kWarningColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    body: SafeArea(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          try {
+                            context.read<HomeInitBloc>().add(InitializeHome());
+                          } catch (_) {}
+                        },
+                        child: Skeletonizer(
+                          enabled: state is HomeLoading,
+                          child: ListView(
+                            physics: Constants.bouncingScrollPhysics,
+                            padding: EdgeInsets.all(sizeConstants.spacing16),
+                            children: [
+                              _PeriodSelector(
+                                selectedPeriod: _selectedPeriod,
+                                onChanged: (period) {
+                                  setState(() {
+                                    _selectedPeriod = period;
+                                  });
+                                },
+                              ),
+                              SizedBox(height: sizeConstants.spacing16),
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 220),
+                                child: switch (_selectedPeriod) {
+                                  _HomePeriod.daily => _DailyDashboard(key: const ValueKey(_HomePeriod.daily), homeInitialModel: homeProvider.homeInitialModel),
+                                  _HomePeriod.weekly => _PeriodOverview(
+                                    key: const ValueKey(_HomePeriod.weekly),
+                                    title: 'گزارش هفته',
+                                    subtitle: 'روند حضور، غیابت و تاخیرهای این هفته',
+                                    icon: Icons.view_week_rounded,
+                                    homeInitialModel: homeProvider.homeInitialModel,
+                                  ),
+                                  _HomePeriod.monthly => _PeriodOverview(
+                                    key: const ValueKey(_HomePeriod.monthly),
+                                    title: 'گزارش ماه',
+                                    subtitle: 'جمع‌بندی کارکرد، روزهای ناقص و عملکرد تیم',
+                                    icon: Icons.calendar_month_rounded,
+                                    homeInitialModel: homeProvider.homeInitialModel,
+                                  ),
+                                  _HomePeriod.annual => _PeriodOverview(
+                                    key: const ValueKey(_HomePeriod.annual),
+                                    title: 'گزارش سال',
+                                    subtitle: 'نمای کلی حضور و غیاب در تمام سال',
+                                    icon: Icons.insights_rounded,
+                                    homeInitialModel: homeProvider.homeInitialModel,
+                                  ),
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: ListView(
-            physics: Constants.bouncingScrollPhysics,
-            padding: EdgeInsets.all(sizeConstants.spacing16),
-            children: [
-              _PeriodSelector(
-                selectedPeriod: _selectedPeriod,
-                onChanged: (period) {
-                  setState(() {
-                    _selectedPeriod = period;
-                  });
+                  );
                 },
               ),
-              SizedBox(height: sizeConstants.spacing16),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 220),
-                child: switch (_selectedPeriod) {
-                  _HomePeriod.daily => _DailyDashboard(
-                    key: const ValueKey(_HomePeriod.daily),
-                    summary: summary,
-                    employees: employees,
-                    activeProjectCount: projectProvider.activeProjectCount,
-                    assignedEmployeeCount: projectProvider.assignedEmployeeCount,
-                  ),
-                  _HomePeriod.weekly => _PeriodOverview(
-                    key: const ValueKey(_HomePeriod.weekly),
-                    title: 'گزارش هفته',
-                    subtitle: 'روند حضور، غیابت و تاخیرهای این هفته',
-                    icon: Icons.view_week_rounded,
-                    summary: summary,
-                  ),
-                  _HomePeriod.monthly => _PeriodOverview(
-                    key: const ValueKey(_HomePeriod.monthly),
-                    title: 'گزارش ماه',
-                    subtitle: 'جمع‌بندی کارکرد، روزهای ناقص و عملکرد تیم',
-                    icon: Icons.calendar_month_rounded,
-                    summary: summary,
-                  ),
-                  _HomePeriod.annual => _PeriodOverview(
-                    key: const ValueKey(_HomePeriod.annual),
-                    title: 'گزارش سال',
-                    subtitle: 'نمای کلی حضور و غیاب در تمام سال',
-                    icon: Icons.insights_rounded,
-                    summary: summary,
-                  ),
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -233,47 +268,36 @@ class _PeriodSelector extends StatelessWidget {
 class _DailyDashboard extends StatelessWidget {
   const _DailyDashboard({
     super.key,
-    required this.summary,
-    required this.employees,
-    required this.activeProjectCount,
-    required this.assignedEmployeeCount,
+    required this.homeInitialModel,
   });
 
-  final _AttendanceSummary summary;
-  final List<EmployeeModel> employees;
-  final int activeProjectCount;
-  final int assignedEmployeeCount;
+  final HomeInitialModel? homeInitialModel;
 
   @override
   Widget build(BuildContext context) {
     final today = Jalali.now();
-    final actionEmployees = employees
-        .where(
-          (employee) => employee.status == null || employee.status == AttStatusEnums.absent || employee.status == AttStatusEnums.latee,
-        )
-        .take(4)
-        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _TodayCard(
           date: '${today.day} ${_monthName(today.month)} ${today.year}'.toPersianDigit(),
-          completion: summary.completionRate,
+          completion: homeInitialModel?.completionRate ?? 0,
         ),
         SizedBox(height: sizeConstants.spacing16),
-        _SummaryGrid(summary: summary),
+        //* وضعیت حاضری و غیر حاضری
+        _SummaryGrid(homeInitialModel: homeInitialModel),
         SizedBox(height: sizeConstants.spacing16),
         _ProjectStatusCard(
-          activeProjectCount: activeProjectCount,
-          assignedEmployeeCount: assignedEmployeeCount,
+          activeProjectCount: homeInitialModel?.totalProjects ?? 0,
+          assignedEmployeeCount: homeInitialModel?.totalEmployeesProjects ?? 0,
         ),
         SizedBox(height: sizeConstants.spacing16),
-        _AddEmployeeCard(totalEmployees: 0),
+        _AddEmployeeCard(totalEmployees: homeInitialModel?.totalEmployees ?? 0),
         SizedBox(height: sizeConstants.spacing16),
         _QuickActions(),
         SizedBox(height: sizeConstants.spacing16),
-        _AttentionList(employees: actionEmployees),
+        // _AttentionList(employees: homeInitialModel?.totalEmployees ?? 0),
       ],
     );
   }
@@ -365,17 +389,17 @@ class _TodayCard extends StatelessWidget {
 }
 
 class _SummaryGrid extends StatelessWidget {
-  const _SummaryGrid({required this.summary});
+  const _SummaryGrid({required this.homeInitialModel});
 
-  final _AttendanceSummary summary;
+  final HomeInitialModel? homeInitialModel;
 
   @override
   Widget build(BuildContext context) {
     final items = [
-      _SummaryItem('حاضر', summary.present, Icons.check_circle_rounded, kGreenColor),
-      _SummaryItem('غایب', summary.absent, Icons.cancel_rounded, kRedColor),
-      _SummaryItem('تاخیر', summary.late, Icons.schedule_rounded, kOrangeColor),
-      _SummaryItem('ثبت نشده', summary.pending, Icons.pending_actions_rounded, kSecondaryColor),
+      _SummaryItem('حاضر', homeInitialModel?.presents ?? 0, Icons.check_circle_rounded, kGreenColor),
+      _SummaryItem('غایب', homeInitialModel?.absents ?? 0, Icons.cancel_rounded, kRedColor),
+      _SummaryItem('تاخیر', homeInitialModel?.lates ?? 0, Icons.schedule_rounded, kOrangeColor),
+      _SummaryItem('ثبت نشده', homeInitialModel?.noStatuses ?? 0, Icons.pending_actions_rounded, kSecondaryColor),
     ];
 
     return GridView.builder(
@@ -576,7 +600,7 @@ class _QuickActions extends StatelessWidget {
             title: 'ثبت حاضری',
             subtitle: 'لیست روزانه',
             onTap: () {
-              context.push(PersianCalendarScreen.id);
+              context.push(AttendanceScreen.id);
             },
           ),
         ),
@@ -587,7 +611,7 @@ class _QuickActions extends StatelessWidget {
             title: 'تقویم',
             subtitle: 'نمای ماه',
             onTap: () {
-              context.push(PersianCalendarScreen.id);
+              context.push(AttendanceScreen.id);
             },
           ),
         ),
@@ -742,13 +766,13 @@ class _PeriodOverview extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.icon,
-    required this.summary,
+    required this.homeInitialModel,
   });
 
   final String title;
   final String subtitle;
   final IconData icon;
-  final _AttendanceSummary summary;
+  final HomeInitialModel? homeInitialModel;
 
   @override
   Widget build(BuildContext context) {
@@ -773,7 +797,7 @@ class _PeriodOverview extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: kGreyColor600),
           ),
           SizedBox(height: sizeConstants.spacing16),
-          _SummaryGrid(summary: summary),
+          _SummaryGrid(homeInitialModel: homeInitialModel),
           SizedBox(height: sizeConstants.spacing16),
           Text(
             'در قدم بعدی این بخش می‌تواند نمودار روند، بهترین روزها، افراد پرتاخیر و خروجی گزارش داشته باشد.',
@@ -802,8 +826,8 @@ class _SummaryItem {
   final Color color;
 }
 
-class _AttendanceSummary {
-  const _AttendanceSummary({
+class _AttendanceSummaryModel {
+  const _AttendanceSummaryModel({
     required this.total,
     required this.present,
     required this.absent,
@@ -822,8 +846,8 @@ class _AttendanceSummary {
     return (present + absent + late) / total;
   }
 
-  factory _AttendanceSummary.fromEmployees(List<EmployeeModel> employees) {
-    return _AttendanceSummary(
+  factory _AttendanceSummaryModel.fromEmployees(List<EmployeeModel> employees) {
+    return _AttendanceSummaryModel(
       total: employees.length,
       present: employees.where((employee) => employee.status == AttStatusEnums.present).length,
       absent: employees.where((employee) => employee.status == AttStatusEnums.absent).length,

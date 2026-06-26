@@ -1,10 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:tetco_attendance/features/screens/initial_screens/login_screen.dart';
 import 'package:tetco_attendance/features/screens/initial_screens/splash_screen.dart';
-import 'package:tetco_attendance/features/screens/main_screens/attendance_screen/attendance_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/home_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/home_screen/main_home_screen.dart';
-import 'package:tetco_attendance/features/screens/main_screens/persian_calendar_screen/persian_calendar_screen.dart';
+import 'package:tetco_attendance/features/screens/main_screens/attendance_screen/attendance_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/payroll_screen/payroll_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/employee_screen.dart';
 import 'package:tetco_attendance/features/screens/main_screens/project_roll_call_screen/project_roll_call_screen.dart';
@@ -56,13 +55,13 @@ final GoRouter appRouter = GoRouter(
         return AttendanceScreen();
       },
     ),
-    GoRoute(
-      path: PersianCalendarScreen.id,
-      name: PersianCalendarScreen.name,
-      builder: (context, state) {
-        return PersianCalendarScreen();
-      },
-    ),
+    // GoRoute(
+    //   path: AttendanceScreen.id,
+    //   name: AttendanceScreen.name,
+    //   builder: (context, state) {
+    //     return AttendanceScreen();
+    //   },
+    // ),
     GoRoute(
       path: ProjectsScreen.id,
       name: ProjectsScreen.name,
