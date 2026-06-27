@@ -572,7 +572,7 @@ class _EmployeeCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    _getStatus(employee.status?.name),
+                    _getStatus(employee.status?.name) ?? '',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _getStatusColor(employee.status?.name)),
                   ),
                   Row(
@@ -635,8 +635,8 @@ _getStatus(String? status) {
     return 'حاضر';
   } else if (status == AttStatusEnums.latee.name) {
     return 'تاخیر';
-  } else {
-    return status;
+  } else if (status == null) {
+    return 'ثبت نشده';
   }
 }
 

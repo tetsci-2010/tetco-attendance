@@ -5,6 +5,6 @@ class EmployeeRole {
   const EmployeeRole({required this.id, required this.role});
 
   factory EmployeeRole.fromJson(Map<String, dynamic> json) {
-    return EmployeeRole(id: json['id'], role: json['role']);
+    return EmployeeRole(id: json['id'], role: json['name']);
   }
 }

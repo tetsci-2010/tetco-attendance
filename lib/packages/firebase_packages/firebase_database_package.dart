@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
+import 'package:tetco_attendance/features/data/models/paginate_result_model.dart';
 
 class FirebaseFirestoreService {
-  static DocumentSnapshot? lastDoc;
-
   /// CREATE / INSERT
   static Future<void> create(String collectionPath, Map<String, dynamic> data, {String? id}) async {
     try {
@@ -51,38 +50,44 @@ class FirebaseFirestoreService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> readPaginate(
+  static Future<PaginateResult<Map<String, dynamic>>> readPaginate(
     String collection, {
     int limit = 30,
-    bool refresh = false,
+    QueryDocumentSnapshot<Map<String, dynamic>>? lastDoc,
     String? searchKey,
     String? status,
   }) async {
     try {
-      final FirebaseFirestore _db = FirebaseFirestore.instance;
-      if (refresh) lastDoc = null;
-      Query? query;
-      query = await _db.collection(collection).orderBy('updated_at', descending: true).orderBy(FieldPath.documentId).limit(limit);
+      Query<Map<String, dynamic>> query = FirebaseFirestore.instance
+          .collection(collection)
+          .orderBy('updated_at', descending: true)
+          .orderBy(FieldPath.documentId)
+          .limit(limit);
+
+      if (status != null) {
+        query = query.where('status', isEqualTo: status);
+      }
 
       if (lastDoc != null) {
-        query = query.startAfterDocument(lastDoc!);
+        query = query.startAfterDocument(lastDoc);
       }
-      QuerySnapshot snapshot = await query.get();
 
-      if (snapshot.docs.isEmpty) return [];
+      final snapshot = await query.get();
 
-      lastDoc = snapshot.docs.last;
-
-      return snapshot.docs.map((doc) {
-        return {
-          'id': doc.id,
-          ...doc.data() as Map<String, dynamic>,
-        };
-      }).toList();
+      return PaginateResult(
+        items: snapshot.docs.map((doc) {
+          return {
+            'id': doc.id,
+            ...doc.data(),
+          };
+        }).toList(),
+        lastDoc: snapshot.docs.isEmpty ? null : snapshot.docs.last,
+      );
     } on FirebaseException catch (e) {
-      throw AppException(errorMessage: '${e.message} - ${e.stackTrace.toString()}', statusCode: e.code);
-    } catch (e) {
-      throw AppException(errorMessage: e.toString());
+      throw AppException(
+        errorMessage: e.message ?? 'Unknown Firebase error',
+        statusCode: e.code,
+      );
     }
   }
 

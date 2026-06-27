@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tetco_attendance/constants/exceptions.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_create_model.dart';
@@ -9,6 +10,7 @@ part 'employee_event.dart';
 part 'employee_state.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
+  static QueryDocumentSnapshot<Map<String, dynamic>>? lastDoc;
   final EmployeeService employeeService;
   static bool hasMore = true;
   static bool isLoading = false;
@@ -39,13 +41,15 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         isRefresh: event.isRefresh,
         searchKey: event.searchKey,
         status: event.status,
+        lastDoc: lastDoc,
       );
-      if (result.isEmpty) {
+      lastDoc = result.lastDoc;
+      if (result.items.isEmpty) {
         hasMore = false;
       } else {
         hasMore = true;
       }
-      emit(FetchAllEmployeesSuccess(employees: result, hasMore: hasMore));
+      emit(FetchAllEmployeesSuccess(employees: result.items.cast<EmployeeModel>(), hasMore: hasMore));
     } on AppException catch (e) {
       emit(FetchAllEmployeesFailure(errorMessage: e.errorMessage, statusCode: e.statusCode));
     } catch (e) {

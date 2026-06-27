@@ -3,15 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tetco_attendance/constants/colors.dart';
+import 'package:tetco_attendance/constants/constants.dart';
 import 'package:tetco_attendance/constants/l10n/app_l10n.dart';
 import 'package:tetco_attendance/features/screens/main_screens/projects_screen/data/models/project_model.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/provider/employee_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/projects_screen/data/providers/project_provider.dart';
 import 'package:tetco_attendance/features/screens/main_screens/employee_screen/data/models/employee_model.dart';
 import 'package:tetco_attendance/features/screens/main_screens/project_roll_call_screen/project_roll_call_screen.dart';
+import 'package:tetco_attendance/packages/dropdown_search_package/dropdown_search_package.dart';
 import 'package:tetco_attendance/utils/popup_helper.dart';
 import 'package:tetco_attendance/utils/size_constant.dart';
-import 'package:tetco_attendance/widgets/buttons/filled_btn_with_icon.dart';
 import 'package:tetco_attendance/widgets/custom_form_field.dart';
 import 'package:tetco_attendance/widgets/custom_simple_appbar.dart';
 import 'package:tetco_attendance/widgets/empty_screen_with_action.dart';
@@ -21,62 +22,71 @@ class ProjectsScreen extends StatelessWidget {
 
   static const String id = '/projects_screen';
   static const String name = 'projects_screen';
+  static const List<ProjectModel> projects = [
+    ProjectModel(id: '1', name: 'پروژه امتحانی'),
+    ProjectModel(id: '2', name: 'پروژه امتحانی'),
+    ProjectModel(id: '3', name: 'پروژه امتحانی'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    var projects = context.watch<ProjectProvider>().projects;
-    final employees = context.watch<EmployeeProvider>().employees;
-    projects = [ProjectModel(id: '0', name: 'پروژه هرات')];
-
-    return Scaffold(
-      appBar: CustomSimpleAppbar(
-        title: Text('پروژه ها'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _showProjectSheet(context);
-            },
-            icon: Icon(Icons.add_business_rounded),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: kPrimaryColor,
-        foregroundColor: kWhiteColor,
-        onPressed: () => _showProjectSheet(context),
-        icon: const Icon(Icons.add_rounded),
-        label: const Text('پروژه جدید'),
-      ),
-      body: SafeArea(
-        child: projects.isEmpty
-            ? EmptyScreenWithAction(
-                onCreate: () => _showProjectSheet(context),
-                description: 'بعد از ایجاد پروژه، می‌توانید کارمندان را به آن تخصیص دهید و بعدا حاضری را بر اساس پروژه ثبت کنید.',
-                title: 'پروژه جدید بسازید',
-                actionText: 'ایجاد پروژه',
-              )
-            : ListView(
-                padding: EdgeInsets.all(sizeConstants.spacing16),
-                children: [
-                  _ProjectsOverview(projects: projects),
-                  SizedBox(height: sizeConstants.spacing16),
-                  ...projects.map(
-                    (project) => Padding(
-                      padding: EdgeInsets.only(bottom: sizeConstants.spacing12),
-                      child: _ProjectCard(
-                        project: project,
-                        employees: employees,
-                        onAssign: () => _showAssignmentSheet(
-                          context: context,
-                          project: project,
-                          employees: employees,
+    return ChangeNotifierProvider(
+      create: (context) => ProjectProvider(),
+      child: Consumer<ProjectProvider>(
+        builder: (context, projectProvider, child) {
+          return Scaffold(
+            appBar: CustomSimpleAppbar(
+              title: Text('پروژه ها'),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    _showProjectSheet(context);
+                  },
+                  icon: Icon(Icons.add_business_rounded),
+                ),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton.extended(
+              backgroundColor: kPrimaryColor,
+              foregroundColor: kWhiteColor,
+              onPressed: () => _showProjectSheet(context),
+              icon: const Icon(Icons.add_rounded),
+              label: const Text('پروژه جدید'),
+            ),
+            body: SafeArea(
+              child: projects.isEmpty
+                  ? EmptyScreenWithAction(
+                      onCreate: () => _showProjectSheet(context),
+                      description: 'بعد از ایجاد پروژه، می‌توانید کارمندان را به آن تخصیص دهید و بعدا حاضری را بر اساس پروژه ثبت کنید.',
+                      title: 'پروژه جدید بسازید',
+                      actionText: 'ایجاد پروژه',
+                    )
+                  : ListView(
+                      padding: EdgeInsets.all(sizeConstants.spacing16),
+                      physics: Constants.bouncingScrollPhysics,
+                      children: [
+                        _ProjectsOverview(projects: projects),
+                        SizedBox(height: sizeConstants.spacing16),
+                        ...projects.map(
+                          (project) => Padding(
+                            padding: EdgeInsets.only(bottom: sizeConstants.spacing12),
+                            child: _ProjectCard(
+                              project: project,
+                              employees: [],
+                              onAssign: () => _showAssignmentSheet(
+                                context: context,
+                                project: project,
+                                employees: [],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 80.h),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 80.h),
-                ],
-              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -459,17 +469,102 @@ Future<void> _showProjectSheet(BuildContext context) async {
                         ),
                         SizedBox(height: sizeConstants.spacing16),
                         CustomTextFormField(
-                          labelText: 'سرپرست',
-                          hintText: 'نام سرپرست پروژه را وارد کنید',
-                          prefixIcon: Icons.supervised_user_circle,
-                        ),
-                        SizedBox(height: sizeConstants.spacing16),
-                        CustomTextFormField(
                           labelText: 'موقعیت/آدرس',
                           hintText: 'موقعیت و یا آدرس پروژه را وارد کنید',
                           prefixIcon: Icons.location_on,
                         ),
 
+                        SizedBox(height: sizeConstants.spacing16),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16),
+                          child: DropdownSearchPackage.dropdownSearch<EmployeeModel>(
+                            context: context,
+                            hintText: 'سوپروایز را انتخاب کنید',
+                            itemBuilder: (context, item, isDisabled, isSelected) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16, vertical: sizeConstants.spacing12),
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                decoration: BoxDecoration(
+                                  color: kGreyColor.withAlpha(40),
+                                  borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(flex: 5, child: Text(item.name, style: Theme.of(context).textTheme.bodySmall)),
+                                    SizedBox(width: 10),
+                                    Flexible(
+                                      flex: 3,
+                                      child: Text('${item.role.role}', style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.end),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            validator: (item) {
+                              if (item == null) {
+                                return AppLocalizations.of(context)!.requiredField;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+
+                        SizedBox(height: sizeConstants.spacing16),
+                        DropdownSearchPackage.multiDropdownSearch<EmployeeModel>(
+                          context: context,
+                          title: Text('کارمندان را انتخاب کنید'),
+                          compareFn: (item1, item2) => item1.id == item2.id,
+                          itemAsString: (item) => item.name,
+                          selectedItems: [],
+                          onChanged: (items) {
+                            try {} catch (_) {}
+                          },
+                          itemBuilder: (context, item, isDisabled, isSelected) {
+                            // isSelected = unitCostProvider.addedPurchases.any((element) => element.id == item.id);
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: EdgeInsets.symmetric(horizontal: sizeConstants.spacing16, vertical: sizeConstants.spacing12),
+                              margin: EdgeInsets.fromLTRB(10, 5, 5, 5),
+                              decoration: BoxDecoration(
+                                color: kGreyColor.withAlpha(40),
+                                borderRadius: BorderRadius.circular(sizeConstants.radiusMedium),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    flex: 6,
+                                    child: Text(
+                                      '',
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ),
+                                  // Flexible(
+                                  //   flex: 6,
+                                  //   child: Text.rich(
+                                  //     TextSpan(
+                                  //       text: '${index + 1})  ${item.description}',
+                                  //       children: [
+                                  //         TextSpan(
+                                  //           text: '  (${item.id})',
+                                  //           style: Theme.of(context).textTheme.bodySmall!.copyWith(color: kBlueColor),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     style: Theme.of(context).textTheme.bodySmall,
+                                  //   ),
+                                  // ),
+                                  SizedBox(width: 10),
+                                  Flexible(
+                                    flex: 3,
+                                    child: Text('${item.role.role}', style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.end),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                         SizedBox(height: sizeConstants.spacing16),
                         CustomTextFormField(
                           labelText: 'توضیحات',
